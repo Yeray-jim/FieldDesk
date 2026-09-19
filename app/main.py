@@ -39,7 +39,15 @@ def build_app(page: ft.Page, database: Database) -> None:
     """Build the application on the given Flet page."""
     _configure_window(page)
     services = Services(database, settings)
-    context = AppContext(page=page, settings=settings, services=services)
+    # FilePicker is a page-level service; creating it in the page handler
+    # registers it with the page service registry automatically.
+    file_picker = ft.FilePicker()
+    context = AppContext(
+        page=page,
+        settings=settings,
+        services=services,
+        file_picker=file_picker,
+    )
     AppShell(context).render()
 
 

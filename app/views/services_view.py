@@ -11,6 +11,7 @@ from app.components.theme import Palette
 from app.database.models import Priority, ServiceStatus
 from app.schemas import ServiceCreate, ServiceUpdate
 from app.views.crud_view import CrudView
+from app.views.service_evidence_dialog import ServiceEvidenceDialog
 from app.views.service_materials_dialog import ServiceMaterialsDialog
 
 FULL = 12
@@ -98,11 +99,25 @@ class ServicesView(CrudView):
                 "Materiales",
                 on_click=lambda _event, item=record: self._open_materials(item),
                 color=Palette.PRIMARY,
-            )
+            ),
+            icon_action_button(
+                ft.Icons.PHOTO_LIBRARY_OUTLINED,
+                "Evidencias",
+                on_click=lambda _event, item=record: self._open_evidence(item),
+                color=Palette.INFO,
+            ),
         ]
 
     def _open_materials(self, record) -> None:
-        ServiceMaterialsDialog(self.page, self.services, record).open()
+        ServiceMaterialsDialog(self.page, self.services, record).show()
+
+    def _open_evidence(self, record) -> None:
+        ServiceEvidenceDialog(
+            self.page,
+            self.services,
+            record,
+            file_picker=self.context.file_picker,
+        ).show()
 
     def build_fields(self, record) -> list[FormField]:
         client_options = [

@@ -21,8 +21,8 @@ sincronizada con el código real en cada fase del desarrollo.
 
 ## Estado del proyecto
 
-Versión **0.1.0** — Fase 6 (Integración). La aplicación conecta la interfaz
-con los servicios y la base de datos: CRUD completo de clientes, ubicaciones,
-equipos, servicios, visitas, incidencias y materiales, gestión de materiales
-por servicio y panel de control con datos reales. Las evidencias fotográficas,
-los reportes PDF y el backup llegan en las fases posteriores.
+Versión **0.1.0** — Fase 7 (Evidencias). Además del CRUD completo y el panel
+de control, los servicios permiten adjuntar evidencias fotográficas (se
+guardan en disco y SQLite solo almacena metadatos), verlas en una galería con
+miniaturas y eliminarlas. Los reportes PDF y el backup llegan en las fases
+posteriores.

@@ -73,3 +73,47 @@ def delete_file(path: Path) -> None:
         Path(path).unlink(missing_ok=True)
     except OSError as exc:
         raise StorageError("No se pudo eliminar el archivo almacenado.") from exc
+
+
+def read_image_bytes(path: Path) -> bytes | None:
+    """Read an image file as raw bytes.
+
+    Returns:
+        The file contents, or ``None`` when the file cannot be read.
+    """
+    try:
+        return Path(path).read_bytes()
+    except OSError:
+        return None
+
+
+def make_thumbnail(
+    path: Path,
+    size: tuple[int, int] = (320, 320),
+) -> bytes | None:
+    """Build a JPEG thumbnail for an image file.
+
+    Args:
+        path: Path of the source image.
+        size: Maximum bounding box of the thumbnail.
+
+    Returns:
+        The encoded JPEG bytes, or ``None`` when the file is not a readable
+        image or Pillow is unavailable.
+    """
+    try:
+        from io import BytesIO
+
+        from PIL import Image
+    except ImportError:  # pragma: no cover - Pillow is a hard dependency
+        return None
+
+    try:
+        with Image.open(path) as image:
+            converted = image.convert("RGB")
+            converted.thumbnail(size)
+            buffer = BytesIO()
+            converted.save(buffer, format="JPEG", quality=82)
+            return buffer.getvalue()
+    except Exception:  # noqa: BLE001 - any decoding error yields no preview
+        return None

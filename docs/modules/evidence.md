@@ -1,7 +1,7 @@
 # Módulo: Evidencias
 
-> Estado: **servicio implementado** (Fase 4); la interfaz de selección y
-> visualización llega en la Fase 7.
+> Estado: **completo** (servicio en Fase 4, selección y visualización en
+> Fase 7).
 
 ## Propósito
 
@@ -23,13 +23,23 @@ realizado.
 | `EvidenceRepository` | `database/repositories` | Persistencia. |
 | `EvidenceCreate` | `schemas` | Validación. |
 | `EvidenceService` | `services` | Copia de archivos y reglas. |
-| `EvidenceGallery` | `components` | Visualización. |
+| `image_thumbnail` | `components/gallery` | Miniatura JPEG con Pillow. |
+| `ImagePreviewDialog` | `components/gallery` | Visor a tamaño completo. |
+| `ServiceEvidenceDialog` | `views` | Galería, selección con `FilePicker` y borrado. |
 
 ## Flujo
 
 ```text
-FilePicker → validar imagen → copiar a storage/images/ → guardar metadatos → galería
+ServiceEvidenceDialog → FilePicker (async, múltiple) → EvidenceService.add_evidence
+→ validar imagen → copiar a storage/images/ → guardar metadatos → refrescar galería
 ```
+
+## Interfaz
+
+La acción **Evidencias** de cada servicio abre una galería modal con
+miniaturas generadas por Pillow. Permite seleccionar varias imágenes, verlas a
+tamaño completo, eliminarlas (con confirmación, borrando también el archivo) y
+resume el recuento de evidencias.
 
 ## Dependencias
 

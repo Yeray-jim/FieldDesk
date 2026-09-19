@@ -78,7 +78,7 @@ class ServiceMaterialsDialog(GlassDialog):
             icon=ft.Icons.INVENTORY_2_OUTLINED,
         )
 
-    def open(self) -> None:
+    def show(self) -> None:
         """Display the dialog."""
         open_dialog(self._page, self)
 

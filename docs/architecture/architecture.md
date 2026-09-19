@@ -169,8 +169,9 @@ La capa de interfaz vive en `app/views` (pantallas) y `app/components`
 
 Las pantallas de clientes, ubicaciones, equipos, servicios, visitas,
 incidencias y materiales están conectadas de extremo a extremo
-(UI → servicios → repositorios → SQLite). El panel de control y la gestión de
-materiales por servicio también consumen los servicios reales.
+(UI → servicios → repositorios → SQLite). El panel de control, la gestión de
+materiales por servicio y la galería de evidencias (con `FilePicker` y
+miniaturas Pillow) también consumen los servicios reales.
 
 ## 11. Decisiones arquitectónicas
 

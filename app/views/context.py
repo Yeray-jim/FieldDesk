@@ -17,3 +17,4 @@ class AppContext:
     page: ft.Page
     settings: Settings
     services: Services
+    file_picker: ft.FilePicker | None = None
