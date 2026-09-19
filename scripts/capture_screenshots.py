@@ -24,6 +24,7 @@ import flet as ft  # noqa: E402
 from app.config.settings import Settings  # noqa: E402
 from app.database import Database  # noqa: E402
 from app.database.migrations import run_migrations  # noqa: E402
+from app.components.theme import apply_theme  # noqa: E402
 from app.services import Services  # noqa: E402
 from app.views.app_shell import AppShell  # noqa: E402
 from app.views.context import AppContext  # noqa: E402
@@ -81,6 +82,7 @@ def main(page: ft.Page) -> None:
         file_picker=ft.FilePicker(),
         url_launcher=ft.UrlLauncher(),
     )
+    apply_theme(page)
     shell = AppShell(context)
     screenshot = ft.Screenshot(content=shell.build_root(), expand=True)
     page.add(screenshot)

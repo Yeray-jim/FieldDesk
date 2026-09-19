@@ -19,7 +19,7 @@ class Palette:
 
     SURFACE = "#FFFFFF"
     TEXT = "#0F172A"
-    TEXT_MUTED = "#64748B"
+    TEXT_MUTED = "#334155"
     BORDER = "#CBD5E1"
 
     PRIMARY = "#4F46E5"
@@ -100,6 +100,18 @@ def build_theme() -> ft.Theme:
         use_material3=True,
         primary_text_theme=ft.TextTheme(
             body_medium=ft.TextStyle(color=Palette.TEXT, size=FontSize.BODY)
+        ),
+        hint_color=Palette.TEXT_MUTED,
+        unselected_control_color=Palette.TEXT_MUTED,
+        secondary_header_color=Palette.TEXT_MUTED,
+        navigation_rail_theme=ft.NavigationRailTheme(
+            unselected_label_text_style=ft.TextStyle(
+                color=Palette.TEXT_MUTED
+            ),
+            selected_label_text_style=ft.TextStyle(color=Palette.PRIMARY),
+        ),
+        navigation_bar_theme=ft.NavigationBarTheme(
+            label_text_style=ft.TextStyle(color=Palette.TEXT_MUTED),
         ),
     )
 
