@@ -23,6 +23,7 @@ from app.components.theme import (
     chrome_color,
 )
 from app.utils.constants import MOBILE_BREAKPOINT
+from app.utils.i18n import t
 from app.views.base_view import BaseView
 from app.views.clients_view import ClientsView
 from app.views.context import AppContext
@@ -203,7 +204,7 @@ class AppShell:
                         size=24,
                     ),
                     ft.Text(
-                        self._items[self._selected].label,
+                        t(self._items[self._selected].label),
                         size=FontSize.HEADING,
                         weight=ft.FontWeight.W_600,
                         color=Palette.TEXT,

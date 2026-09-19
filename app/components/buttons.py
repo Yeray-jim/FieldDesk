@@ -7,6 +7,7 @@ from collections.abc import Callable
 import flet as ft
 
 from app.components.theme import FontSize, Metrics, Palette
+from app.utils.i18n import t
 
 
 def _style(
@@ -34,7 +35,7 @@ def primary_button(
     if expand is not None:
         extra["expand"] = expand
     return ft.FilledButton(
-        content=text,
+        content=t(text),
         icon=icon,
         on_click=on_click,
         disabled=disabled,
@@ -55,7 +56,7 @@ def secondary_button(
     if expand is not None:
         extra["expand"] = expand
     return ft.OutlinedButton(
-        content=text,
+        content=t(text),
         icon=icon,
         on_click=on_click,
         disabled=disabled,
@@ -72,7 +73,7 @@ def danger_button(
 ) -> ft.FilledButton:
     """A destructive action, visually distinct from the primary action."""
     return ft.FilledButton(
-        content=text,
+        content=t(text),
         icon=icon,
         on_click=on_click,
         disabled=disabled,
@@ -88,7 +89,7 @@ def ghost_button(
 ) -> ft.TextButton:
     """A low-emphasis text button."""
     return ft.TextButton(
-        content=text,
+        content=t(text),
         icon=icon,
         on_click=on_click,
         disabled=disabled,

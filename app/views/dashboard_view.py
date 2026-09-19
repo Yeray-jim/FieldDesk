@@ -13,6 +13,7 @@ from app.components.cards import EmptyState, GlassCard, SectionHeader, StatCard
 from app.components.theme import FontSize, Metrics, Palette
 from app.database.models import Incident, Service, ServiceStatus
 from app.utils.dates import format_datetime
+from app.utils.i18n import t
 from app.views.base_view import BaseView
 
 logger = logging.getLogger(__name__)
@@ -247,7 +248,8 @@ class DashboardView(BaseView):
                                 color=Palette.TEXT,
                             ),
                             ft.Text(
-                                f"Registrada: {format_datetime(incident.created_at)}",
+                                f"{t('Registrada')}: "
+                                f"{format_datetime(incident.created_at)}",
                                 size=FontSize.CAPTION,
                                 color=Palette.TEXT_MUTED,
                             ),
@@ -266,10 +268,10 @@ class DashboardView(BaseView):
 
     @staticmethod
     def _created_subtitle(service: Service) -> str:
-        return f"Creado: {format_datetime(service.created_at)}"
+        return f"{t('Creado')}: {format_datetime(service.created_at)}"
 
     @staticmethod
     def _scheduled_subtitle(service: Service) -> str:
         if service.scheduled_date is not None:
-            return f"Programado: {format_datetime(service.scheduled_date)}"
-        return f"Creado: {format_datetime(service.created_at)}"
+            return f"{t('Programado')}: {format_datetime(service.scheduled_date)}"
+        return f"{t('Creado')}: {format_datetime(service.created_at)}"

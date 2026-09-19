@@ -83,6 +83,7 @@ erDiagram
 | scheduled_date | DateTime | opcional |
 | status | Enum | `PENDING`, `IN_PROGRESS`, `COMPLETED`, `CANCELLED` |
 | priority | Enum | `LOW`, `MEDIUM`, `HIGH` |
+| materials_applied | Boolean | indica si ya se descontó el material |
 | created_at / updated_at | DateTime | obligatorio |
 
 ### Visit
@@ -120,6 +121,7 @@ erDiagram
 | name | String | obligatorio |
 | description | Text | opcional |
 | unit | String | opcional |
+| stock | Numeric(12,3) | existencias, por defecto 0 |
 | created_at / updated_at | DateTime | obligatorio |
 
 ### ServiceMaterial (tabla de asociación)

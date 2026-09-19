@@ -12,6 +12,7 @@ from app.components.theme import (
     glass_surface_color,
     soft_shadow,
 )
+from app.utils.i18n import t
 
 
 class GlassCard(ft.Container):
@@ -61,7 +62,7 @@ class SectionHeader(ft.Row):
             leading.append(ft.Icon(icon, size=20, color=Palette.PRIMARY))
         leading.append(
             ft.Text(
-                title,
+                t(title),
                 size=FontSize.HEADING,
                 weight=ft.FontWeight.W_600,
                 color=Palette.TEXT,
@@ -105,7 +106,7 @@ class StatCard(GlassCard):
                     color=Palette.TEXT,
                 ),
                 ft.Text(
-                    label,
+                    t(label),
                     size=FontSize.CAPTION,
                     color=Palette.TEXT_MUTED,
                 ),
@@ -137,13 +138,13 @@ class EmptyState(ft.Column):
             controls=[
                 ft.Icon(icon, size=40, color=Palette.TEXT_MUTED),
                 ft.Text(
-                    title,
+                    t(title),
                     size=FontSize.BODY,
                     weight=ft.FontWeight.W_600,
                     color=Palette.TEXT,
                 ),
                 ft.Text(
-                    message,
+                    t(message),
                     size=FontSize.CAPTION,
                     color=Palette.TEXT_MUTED,
                     text_align=ft.TextAlign.CENTER,
@@ -163,7 +164,7 @@ class InfoRow(ft.Row):
         if icon is not None:
             leading.append(ft.Icon(icon, size=16, color=Palette.TEXT_MUTED))
         leading.append(
-            ft.Text(label, size=FontSize.CAPTION, color=Palette.TEXT_MUTED)
+            ft.Text(t(label), size=FontSize.CAPTION, color=Palette.TEXT_MUTED)
         )
         super().__init__(
             controls=[

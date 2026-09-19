@@ -12,6 +12,9 @@ from app.components.theme import FontSize, Metrics, Palette
 from app.schemas import ServiceMaterialCreate
 from app.services import Services
 from app.utils.exceptions import FieldDeskError
+from app.views.material_fields import open_material_form
+
+_NEW_MATERIAL = "__new__"
 
 
 class ServiceMaterialsDialog(GlassDialog):
@@ -28,6 +31,7 @@ class ServiceMaterialsDialog(GlassDialog):
         self._material_dropdown = GlassDropdown(
             "Material",
             self._material_options(),
+            on_select=self._on_material_select,
             col={"sm": 12, "md": 7},
         )
         self._quantity_field = GlassTextField(
@@ -83,10 +87,34 @@ class ServiceMaterialsDialog(GlassDialog):
         open_dialog(self._page, self)
 
     def _material_options(self) -> list[tuple[str, str]]:
-        return [
-            (str(material.id), material.name)
-            for material in self._services.materials.list_materials()
+        options = []
+        for material in self._services.materials.list_materials():
+            stock = material.stock if material.stock is not None else 0
+            unit = f" {material.unit}" if material.unit else ""
+            options.append(
+                (str(material.id), f"{material.name} · {stock}{unit}")
+            )
+        options.append((_NEW_MATERIAL, "+ Crear nuevo material…"))
+        return options
+
+    def _on_material_select(self, event: ft.ControlEvent) -> None:
+        if event.control.value == _NEW_MATERIAL:
+            event.control.value = None
+            open_material_form(
+                self._page,
+                self._services,
+                self._on_material_created,
+            )
+            self._page.update()
+
+    def _on_material_created(self, material) -> None:
+        self._material_dropdown.options = [
+            ft.DropdownOption(key=key, text=text)
+            for key, text in self._material_options()
         ]
+        self._material_dropdown.value = str(material.id)
+        self._material_dropdown.clear_error()
+        self._page.update()
 
     def _material_names(self) -> dict[int, str]:
         return {
@@ -138,6 +166,10 @@ class ServiceMaterialsDialog(GlassDialog):
     def _handle_add(self, _event: ft.ControlEvent) -> None:
         self._material_dropdown.clear_error()
         self._quantity_field.clear_error()
+        if self._material_dropdown.value in (None, _NEW_MATERIAL):
+            self._material_dropdown.show_error("Selecciona un material.")
+            self._page.update()
+            return
         try:
             data = ServiceMaterialCreate(
                 service_id=self._service.id,

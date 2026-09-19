@@ -13,6 +13,7 @@ from dataclasses import dataclass
 import flet as ft
 
 from app.components.theme import Metrics, Palette, chrome_color
+from app.utils.i18n import t
 
 
 @dataclass(frozen=True)
@@ -45,7 +46,7 @@ class AppNavigationRail(ft.NavigationRail):
                     selected_icon=ft.Icon(
                         item.selected_icon, color=Palette.PRIMARY
                     ),
-                    label=item.label,
+                    label=t(item.label),
                 )
                 for item in items
             ],
@@ -77,7 +78,7 @@ class AppNavigationBar(ft.NavigationBar):
                     selected_icon=ft.Icon(
                         item.selected_icon, color=Palette.PRIMARY
                     ),
-                    label=item.label,
+                    label=t(item.label),
                 )
                 for item in items
             ],

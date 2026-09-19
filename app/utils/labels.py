@@ -6,6 +6,8 @@ consistent.
 
 from __future__ import annotations
 
+from app.utils.i18n import t
+
 _STATUS_LABELS: dict[str, str] = {
     "OPERATIONAL": "Operativo",
     "MAINTENANCE": "Mantenimiento",
@@ -29,6 +31,6 @@ def normalize_status(value: object) -> str:
 
 
 def status_label(value: object) -> str:
-    """Return the Spanish label for a status or priority value."""
+    """Return the label for a status or priority value."""
     key = normalize_status(value)
-    return _STATUS_LABELS.get(key, key.replace("_", " ").title())
+    return t(_STATUS_LABELS.get(key, key.replace("_", " ").title()))

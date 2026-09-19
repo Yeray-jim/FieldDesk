@@ -179,13 +179,14 @@ class ExportService(BaseService):
         return self._export("Incidencias", headers, rows, stamp)
 
     def _export_materials(self, stamp: str) -> Path:
-        headers = ["id", "nombre", "unidad", "descripcion"]
+        headers = ["id", "nombre", "unidad", "existencias", "descripcion"]
         with self._repositories() as repositories:
             rows = [
                 [
                     material.id,
                     material.name,
                     material.unit or "",
+                    str(material.stock if material.stock is not None else 0),
                     material.description or "",
                 ]
                 for material in repositories.materials.list_ordered()

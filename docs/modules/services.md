@@ -30,6 +30,14 @@ central del flujo: agrupa visitas, incidencias, materiales y evidencias.
 Cliente + Equipo → descripción, fecha, prioridad, estado → visitas/incidencias/materiales/evidencias
 ```
 
+## Materiales y cierre del servicio
+
+Un servicio puede requerir uno o varios materiales del catálogo
+(`ServiceMaterial`). Al marcar el servicio como **Completado** se descuentan
+automáticamente las cantidades utilizadas del inventario; al reabrirlo se
+restauran. La operación es idempotente: no se descuenta dos veces el mismo
+servicio.
+
 ## Dependencias
 
 - Depende de `Client` y `Equipment`.

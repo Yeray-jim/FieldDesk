@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from decimal import Decimal
+
 from app.database.models import Material, ServiceMaterial
 from app.schemas.material_schema import (
     MaterialCreate,
@@ -9,7 +11,7 @@ from app.schemas.material_schema import (
     ServiceMaterialCreate,
 )
 from app.services.base_service import BaseService
-from app.utils.exceptions import ConflictError, NotFoundError
+from app.utils.exceptions import ConflictError, NotFoundError, ValidationError
 
 
 class MaterialService(BaseService):
@@ -106,15 +108,20 @@ class MaterialService(BaseService):
                 raise NotFoundError(
                     f"No existe el servicio con id {data.service_id}."
                 )
-            if repositories.materials.get(data.material_id) is None:
+            material = repositories.materials.get(data.material_id)
+            if material is None:
                 raise NotFoundError(
                     f"No existe el material con id {data.material_id}."
                 )
+            service = repositories.services.get(data.service_id)
+            applied = bool(service and service.materials_applied)
 
             record = repositories.service_materials.find(
                 data.service_id, data.material_id
             )
             if record is None:
+                if applied:
+                    self._consume(material, data.quantity)
                 record = ServiceMaterial(
                     service_id=data.service_id,
                     material_id=data.material_id,
@@ -123,10 +130,28 @@ class MaterialService(BaseService):
                 )
                 repositories.session.add(record)
             else:
+                difference = data.quantity - record.quantity
+                if applied and difference > 0:
+                    self._consume(material, difference)
+                elif applied and difference < 0:
+                    material.stock = (
+                        material.stock or Decimal("0")
+                    ) - difference
                 record.quantity = data.quantity
                 record.notes = data.notes
             repositories.session.flush()
             return record
+
+    @staticmethod
+    def _consume(material: Material, quantity: Decimal) -> None:
+        available = material.stock or Decimal("0")
+        if available < quantity:
+            raise ValidationError(
+                "No hay existencias suficientes de "
+                f"«{material.name}». Disponible: {available}, "
+                f"requerido: {quantity}."
+            )
+        material.stock = available - quantity
 
     def remove_service_material(
         self,
@@ -146,6 +171,13 @@ class MaterialService(BaseService):
                 raise NotFoundError(
                     "El servicio no tiene registrado ese material."
                 )
+            service = repositories.services.get(service_id)
+            if service is not None and service.materials_applied:
+                material = repositories.materials.get(material_id)
+                if material is not None:
+                    material.stock = (
+                        material.stock or Decimal("0")
+                    ) + record.quantity
             repositories.service_materials.delete(record)
 
     def list_service_materials(self, service_id: int) -> list[ServiceMaterial]:

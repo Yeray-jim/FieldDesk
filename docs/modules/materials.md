@@ -13,7 +13,17 @@ servicio.
 - Asociar materiales a un servicio con una cantidad.
 - Reportar los materiales utilizados en el historial y en el PDF.
 
-> No se implementa inventario avanzado (stock, entradas/salidas ni valuación).
+## Inventario
+
+Cada material guarda sus **existencias** (`stock`). En un servicio se pueden
+seleccionar uno o varios materiales del catálogo con su cantidad. Al finalizar
+el servicio (estado `COMPLETED`), el sistema **descuenta automáticamente** las
+cantidades indicadas de las existencias; si se reabre el servicio, las
+devuelve. Si no hay existencias suficientes se muestra un error claro y no se
+modifica nada. El consumo de un servicio ya finalizado también ajusta las
+existencias al añadir, cambiar o quitar materiales.
+
+No se implementa valuación económica del inventario.
 
 ## Clases principales
 

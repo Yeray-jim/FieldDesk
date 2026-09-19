@@ -8,6 +8,7 @@ import flet as ft
 
 from app.components.buttons import danger_button, ghost_button, primary_button
 from app.components.theme import FontSize, Metrics, Palette
+from app.utils.i18n import t
 
 
 class GlassDialog(ft.AlertDialog):
@@ -24,7 +25,7 @@ class GlassDialog(ft.AlertDialog):
         super().__init__(
             modal=True,
             title=ft.Text(
-                title,
+                t(title),
                 size=FontSize.HEADING,
                 weight=ft.FontWeight.W_600,
                 color=Palette.TEXT,
@@ -94,7 +95,7 @@ def notify(page: ft.Page, message: str, *, error: bool = False) -> None:
     """Show a transient message at the bottom of the page."""
     snack = ft.SnackBar(
         content=ft.Text(
-            message,
+            t(message),
             color=Palette.ON_PRIMARY,
             size=FontSize.BODY,
         ),

@@ -26,6 +26,7 @@ from app.database import Database  # noqa: E402
 from app.database.migrations import run_migrations  # noqa: E402
 from app.components.theme import apply_theme  # noqa: E402
 from app.services import Services  # noqa: E402
+from app.utils import i18n  # noqa: E402
 from app.views.app_shell import AppShell  # noqa: E402
 from app.views.context import AppContext  # noqa: E402
 
@@ -107,6 +108,13 @@ def main(page: ft.Page) -> None:
         )
         await asyncio.sleep(1.2)
         await _capture(screenshot, "06_panel_oscuro")
+
+        i18n.set_language("en")
+        page.theme_mode = ft.ThemeMode.LIGHT
+        shell._remount()  # noqa: SLF001
+        await asyncio.sleep(1.2)
+        await _capture(screenshot, "07_panel_ingles")
+        i18n.set_language("es")
         print("screenshots done")
 
     page.run_task(sequence)

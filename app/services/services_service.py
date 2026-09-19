@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from decimal import Decimal
+
 from app.database.models import Equipment, Service, ServiceStatus
 from app.database.repositories import Repositories
 from app.schemas.service_schema import ServiceCreate, ServiceUpdate
@@ -27,7 +29,10 @@ class ServiceService(BaseService):
             self._validate_ownership(equipment, data.client_id)
 
             service = Service(**data.model_dump())
-            return repositories.services.add(service)
+            repositories.services.add(service)
+            if service.status == ServiceStatus.COMPLETED:
+                self._deduct_materials(repositories, service)
+            return service
 
     def get_service(self, service_id: int) -> Service | None:
         """Return a service by id, or ``None`` when it does not exist."""
@@ -107,10 +112,66 @@ class ServiceService(BaseService):
             equipment = self._validate_equipment(repositories, equipment_id)
             self._validate_ownership(equipment, client_id)
 
+            old_status = service.status
             for field, value in changes.items():
                 setattr(service, field, value)
+            self._sync_materials(repositories, service, old_status)
             repositories.session.flush()
             return service
+
+    def _sync_materials(
+        self,
+        repositories: Repositories,
+        service: Service,
+        old_status: ServiceStatus,
+    ) -> None:
+        """Deduct or restore material stock when the status changes."""
+        if (
+            service.status == ServiceStatus.COMPLETED
+            and not service.materials_applied
+        ):
+            self._deduct_materials(repositories, service)
+        elif (
+            service.status != ServiceStatus.COMPLETED
+            and old_status == ServiceStatus.COMPLETED
+            and service.materials_applied
+        ):
+            self._restore_materials(repositories, service)
+
+    @staticmethod
+    def _deduct_materials(
+        repositories: Repositories,
+        service: Service,
+    ) -> None:
+        for record in repositories.service_materials.list_by_service(
+            service.id
+        ):
+            material = repositories.materials.get(record.material_id)
+            if material is None:
+                continue
+            available = material.stock or Decimal("0")
+            if available < record.quantity:
+                raise ValidationError(
+                    "No hay existencias suficientes de "
+                    f"«{material.name}». Disponible: {available}, "
+                    f"requerido: {record.quantity}."
+                )
+            material.stock = available - record.quantity
+        service.materials_applied = True
+
+    @staticmethod
+    def _restore_materials(
+        repositories: Repositories,
+        service: Service,
+    ) -> None:
+        for record in repositories.service_materials.list_by_service(
+            service.id
+        ):
+            material = repositories.materials.get(record.material_id)
+            if material is None:
+                continue
+            material.stock = (material.stock or Decimal("0")) + record.quantity
+        service.materials_applied = False
 
     def delete_service(self, service_id: int) -> None:
         """Delete a service that has no related records.

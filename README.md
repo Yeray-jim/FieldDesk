@@ -5,7 +5,7 @@ administren clientes, ubicaciones, equipos, servicios, visitas, incidencias,
 materiales, evidencias fotográficas y reportes PDF. Todos los datos se
 almacenan localmente en **SQLite**; no requiere conexión a Internet.
 
-> Versión actual: **0.2.0** · Estado: **completo** (11/11 fases).
+> Versión actual: **0.3.0** · Estado: **completo** (11/11 fases).
 
 ## Características
 
@@ -17,6 +17,9 @@ almacenan localmente en **SQLite**; no requiere conexión a Internet.
 - Backup y restauración de la información en formato ZIP.
 - Exportación de datos a CSV compatible con Excel y LibreOffice.
 - Datos de demostración opcionales para la presentación del proyecto.
+- Inventario de materiales: existencias, consumo por servicio y descuento
+  automático al finalizar el servicio.
+- Aplicación bilingüe (español e inglés) conmutable desde Ajustes.
 - Selección de fechas y horas con calendario y reloj, sin escribirlas.
 - Ubicaciones con dirección estructurada (estado, municipio, colonia,
   calle, lote, manzana y referencias).
@@ -43,6 +46,9 @@ almacenan localmente en **SQLite**; no requiere conexión a Internet.
 
 ### Modo oscuro
 ![Panel de control en modo oscuro](docs/images/06_panel_oscuro.png)
+
+### Interfaz en inglés
+![Panel de control en inglés](docs/images/07_panel_ingles.png)
 
 ## Tecnologías
 
@@ -136,7 +142,7 @@ arrancará la interfaz Flet.
 ## Testing
 
 ```bash
-pytest                                              # 147 pruebas
+pytest                                              # 165 pruebas
 pytest -m unit                                      # solo pruebas unitarias
 pytest -m integration                               # solo pruebas de integración
 pytest --cov=app --cov-report=term-missing          # cobertura (~87 %)

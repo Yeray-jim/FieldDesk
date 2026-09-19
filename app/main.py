@@ -14,6 +14,7 @@ from app.config import configure_logging, settings
 from app.database import Database
 from app.database.migrations import run_migrations
 from app.services import Services
+from app.utils import i18n
 from app.utils.constants import (
     DEFAULT_WINDOW_HEIGHT,
     DEFAULT_WINDOW_MIN_HEIGHT,
@@ -57,6 +58,9 @@ def run() -> None:
     """Configure the application and start the Flet runtime."""
     configure_logging(settings)
     settings.ensure_directories()
+    i18n.set_language(
+        i18n.load_language(settings.storage_dir / "preferences.json")
+    )
     run_migrations(settings)
 
     database = Database(settings.database_url, echo=settings.debug)

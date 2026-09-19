@@ -15,6 +15,7 @@ class MaterialCreate(SchemaBaseModel):
     name: str = Field(min_length=1, max_length=150)
     description: str | None = None
     unit: str | None = Field(default=None, max_length=50)
+    stock: Decimal = Field(default=Decimal("0"), ge=0)
 
 
 class MaterialUpdate(SchemaBaseModel):
@@ -23,6 +24,7 @@ class MaterialUpdate(SchemaBaseModel):
     name: str | None = Field(default=None, min_length=1, max_length=150)
     description: str | None = None
     unit: str | None = Field(default=None, max_length=50)
+    stock: Decimal | None = Field(default=None, ge=0)
 
 
 class ServiceMaterialCreate(SchemaBaseModel):

@@ -22,6 +22,9 @@ ENV/
 # Throw-away database used by scripts/capture_screenshots.py
 storage/demo/
 
+# User preferences (language, ...)
+storage/preferences.json
+
 # Backups (keep the folder, ignore the archives)
 storage/backups/*
 !storage/backups/.gitkeep

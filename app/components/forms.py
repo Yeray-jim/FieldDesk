@@ -20,6 +20,7 @@ from app.components.buttons import ghost_button, primary_button
 from app.components.dialogs import GlassDialog, notify, open_dialog
 from app.components.theme import FontSize, Metrics, Palette, glass_surface_color
 from app.utils.exceptions import FieldDeskError
+from app.utils.i18n import t
 
 logger = logging.getLogger(__name__)
 
@@ -40,15 +41,15 @@ _PYDANTIC_MESSAGES: dict[str, str] = {
 
 
 def _friendly_message(error: dict) -> str:
-    """Translate a Pydantic error into a user-friendly Spanish message."""
+    """Translate a Pydantic error into a user-friendly message."""
     error_type = error.get("type", "")
     if error_type in _PYDANTIC_MESSAGES:
-        return _PYDANTIC_MESSAGES[error_type]
+        return t(_PYDANTIC_MESSAGES[error_type])
     message = error.get("msg", "Valor inválido.")
     prefix = "Value error, "
     if message.startswith(prefix):
-        return message[len(prefix):]
-    return message
+        message = message[len(prefix):]
+    return t(message)
 
 
 class GlassTextField(ft.TextField):
@@ -76,8 +77,8 @@ class GlassTextField(ft.TextField):
         autofocus: bool = False,
     ) -> None:
         extra: dict = {
-            "label": f"{label} *" if required else label,
-            "hint_text": hint,
+            "label": f"{t(label)} *" if required else t(label),
+            "hint_text": t(hint) if hint else hint,
             "value": value,
             "error": error,
             "password": password,
@@ -133,7 +134,7 @@ class GlassDropdown(ft.Dropdown):
         col: int | dict | None = None,
     ) -> None:
         extra: dict = {
-            "label": f"{label} *" if required else label,
+            "label": f"{t(label)} *" if required else t(label),
             "options": [
                 ft.DropdownOption(key=key, text=text) for key, text in options
             ],
@@ -183,7 +184,7 @@ class GlassDateField(ft.TextField):
             on_change=self._on_date_change,
         )
         extra: dict = {
-            "label": f"{label} *" if required else label,
+            "label": f"{t(label)} *" if required else t(label),
             "value": value,
             "error": error,
             "hint_text": "AAAA-MM-DD",
@@ -242,7 +243,7 @@ class GlassTimeField(ft.TextField):
         self._page = page
         self._picker = ft.TimePicker(on_change=self._on_time_change)
         extra: dict = {
-            "label": f"{label} *" if required else label,
+            "label": f"{t(label)} *" if required else t(label),
             "value": value,
             "error": error,
             "hint_text": "HH:MM",
@@ -311,7 +312,7 @@ def form_actions(
 def required_hint() -> ft.Text:
     """Explain the meaning of the required-field marker."""
     return ft.Text(
-        "Los campos marcados con * son obligatorios.",
+        t("Los campos marcados con * son obligatorios."),
         size=FontSize.CAPTION,
         color=Palette.TEXT_MUTED,
     )

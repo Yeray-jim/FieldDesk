@@ -56,8 +56,19 @@ desplegable **Ubicación** elige **«+ Crear nueva ubicación…»**.
 
 ## Materiales
 
-1. Abre un servicio y pulsa **Añadir material**.
-2. Elige un material del catálogo e indica la cantidad utilizada.
+1. Abre la acción de menú **Materiales** en un servicio.
+2. Elige un material del catálogo (se muestra su existencia), indica la
+   cantidad y pulsa **Añadir**. Puedes crear un material nuevo con
+   **«+ Crear nuevo material…»**.
+3. Al marcar el servicio como **Completado**, se descuentan automáticamente
+   las cantidades utilizadas. Si reabres el servicio, se devuelven.
+
+En **Materiales** puedes consultar y editar las existencias de cada material.
+
+## Idioma
+
+En **Ajustes → Idioma** puedes cambiar entre **Español** e **English**. El
+cambio se aplica al instante y se recuerda al reiniciar.
 
 ## Evidencias fotográficas
 

@@ -27,6 +27,7 @@ compartirlos o analizarlos fuera de la aplicación.
   `Clientes_20260919_110530.csv`, `Equipos_...`, `Servicios_...`,
   `Incidencias_...`, `Materiales_...`.
 - Se escriben en `storage/documents/`.
+- La exportación de materiales incluye una columna `existencias`.
 
 ## Dependencias
 

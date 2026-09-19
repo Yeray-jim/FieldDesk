@@ -5,7 +5,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import TYPE_CHECKING
 
-from sqlalchemy import DateTime, Enum, ForeignKey, String, Text
+from sqlalchemy import Boolean, DateTime, Enum, ForeignKey, String, Text
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -51,6 +51,12 @@ class Service(TimestampMixin, Base):
         Enum(Priority, native_enum=False, length=10, name="service_priority"),
         default=Priority.MEDIUM,
         nullable=False,
+    )
+    materials_applied: Mapped[bool] = mapped_column(
+        Boolean,
+        default=False,
+        nullable=False,
+        server_default="0",
     )
 
     client: Mapped[Client] = relationship(back_populates="services")

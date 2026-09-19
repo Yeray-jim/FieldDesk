@@ -11,7 +11,9 @@ from app.components.cards import GlassCard, InfoRow, SectionHeader
 from app.components.dialogs import confirm_dialog, notify
 from app.components.forms import GlassDropdown
 from app.components.theme import FontSize, Metrics, Palette
+from app.utils import i18n
 from app.utils.exceptions import FieldDeskError
+from app.utils.i18n import t
 from app.views.base_view import BaseView
 
 logger = logging.getLogger(__name__)
@@ -34,6 +36,7 @@ class SettingsView(BaseView):
             controls=[
                 SectionHeader("Ajustes", icon=ft.Icons.SETTINGS_OUTLINED),
                 self._appearance_card(),
+                self._language_card(),
                 self._backup_card(),
                 self._export_card(),
                 self._demo_card(),
@@ -71,6 +74,26 @@ class SettingsView(BaseView):
             )
         )
 
+    def _language_card(self) -> GlassCard:
+        dropdown = GlassDropdown(
+            "Idioma",
+            [
+                ("es", "Español"),
+                ("en", "English"),
+            ],
+            value=i18n.get_language(),
+            on_select=self._on_language_change,
+        )
+        return GlassCard(
+            content=ft.Column(
+                controls=[
+                    SectionHeader("Idioma", icon=ft.Icons.TRANSLATE_OUTLINED),
+                    dropdown,
+                ],
+                spacing=Metrics.SPACING,
+            )
+        )
+
     def _backup_card(self) -> GlassCard:
         return GlassCard(
             content=ft.Column(
@@ -79,10 +102,12 @@ class SettingsView(BaseView):
                         "Copias de seguridad", icon=ft.Icons.BACKUP_OUTLINED
                     ),
                     ft.Text(
-                        "Guarda la base de datos, las imágenes y los "
-                        "documentos en un archivo ZIP, o restaura una copia "
-                        "anterior. Antes de restaurar se crea "
-                        "automáticamente una copia de seguridad.",
+                        t(
+                            "Guarda la base de datos, las imágenes y los "
+                            "documentos en un archivo ZIP, o restaura una "
+                            "copia anterior. Antes de restaurar se crea "
+                            "automáticamente una copia de seguridad."
+                        ),
                         size=FontSize.CAPTION,
                         color=Palette.TEXT_MUTED,
                     ),
@@ -115,9 +140,11 @@ class SettingsView(BaseView):
                         "Exportación", icon=ft.Icons.TABLE_VIEW_OUTLINED
                     ),
                     ft.Text(
-                        "Exporta clientes, equipos, servicios, incidencias y "
-                        "materiales a archivos CSV compatibles con Excel y "
-                        "LibreOffice.",
+                        t(
+                            "Exporta clientes, equipos, servicios, "
+                            "incidencias y materiales a archivos CSV "
+                            "compatibles con Excel y LibreOffice."
+                        ),
                         size=FontSize.CAPTION,
                         color=Palette.TEXT_MUTED,
                     ),
@@ -140,9 +167,11 @@ class SettingsView(BaseView):
                         icon=ft.Icons.AUTO_AWESOME_OUTLINED,
                     ),
                     ft.Text(
-                        "Carga clientes, ubicaciones, equipos, servicios e "
-                        "incidencias de ejemplo. Solo está disponible si la "
-                        "base de datos está vacía.",
+                        t(
+                            "Carga clientes, ubicaciones, equipos, servicios "
+                            "e incidencias de ejemplo. Solo está disponible "
+                            "si la base de datos está vacía."
+                        ),
                         size=FontSize.CAPTION,
                         color=Palette.TEXT_MUTED,
                     ),
@@ -194,6 +223,17 @@ class SettingsView(BaseView):
     # ------------------------------------------------------------------
     # Handlers
     # ------------------------------------------------------------------
+    def _on_language_change(self, event: ft.ControlEvent) -> None:
+        code = event.control.value or "es"
+        i18n.save_language(
+            self.settings.storage_dir / "preferences.json", code
+        )
+        notify(self.page, t("Idioma actualizado."))
+        if self.context.reload is not None:
+            self.context.reload()
+        else:
+            self.page.update()
+
     def _on_theme_change(self, event: ft.ControlEvent) -> None:
         key = event.control.value or "system"
         self.page.theme_mode = _THEME_MODES.get(key, ft.ThemeMode.SYSTEM)

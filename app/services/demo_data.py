@@ -318,7 +318,13 @@ class DemoDataService(BaseService):
     @staticmethod
     def _seed_materials(repositories) -> list[Material]:
         return [
-            repositories.materials.add(Material(name=name, unit=unit))
+            repositories.materials.add(
+                Material(
+                    name=name,
+                    unit=unit,
+                    stock=Decimal("50"),
+                )
+            )
             for name, unit in _MATERIALS
         ]
 

@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
+from decimal import Decimal
 from typing import TYPE_CHECKING
 
-from sqlalchemy import String, Text
+from sqlalchemy import Numeric, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base, TimestampMixin
@@ -22,6 +23,12 @@ class Material(TimestampMixin, Base):
     name: Mapped[str] = mapped_column(String(150), nullable=False, index=True)
     description: Mapped[str | None] = mapped_column(Text)
     unit: Mapped[str | None] = mapped_column(String(50))
+    stock: Mapped[Decimal] = mapped_column(
+        Numeric(12, 3),
+        default=Decimal("0"),
+        nullable=False,
+        server_default="0",
+    )
 
     service_materials: Mapped[list[ServiceMaterial]] = relationship(
         back_populates="material",

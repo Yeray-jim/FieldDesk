@@ -171,6 +171,10 @@ La capa de interfaz vive en `app/views` (pantallas) y `app/components`
 - **Feedback**: los errores de dominio se muestran como avisos claros
   (`notify`), nunca como tracebacks, y las acciones destructivas piden
   confirmación (`confirm_dialog`).
+- **Idioma**: el español es el idioma de origen; los componentes traducen
+  sus etiquetas con `app.utils.i18n.t`. El idioma se elige en Ajustes
+  (español/inglés, por defecto español) y se guarda en
+  `storage/preferences.json`.
 
 Las pantallas de clientes, ubicaciones, equipos, servicios, visitas,
 incidencias y materiales están conectadas de extremo a extremo

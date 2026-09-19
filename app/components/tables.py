@@ -16,6 +16,7 @@ from app.components.theme import (
     table_heading_color,
     table_row_color,
 )
+from app.utils.i18n import t
 
 
 class GlassTable(ft.Container):
@@ -39,7 +40,7 @@ class GlassTable(ft.Container):
                 columns=[
                     ft.DataColumn(
                         ft.Text(
-                            header,
+                            t(header),
                             size=FontSize.CAPTION,
                             weight=ft.FontWeight.W_600,
                             color=Palette.TEXT_MUTED,
@@ -69,7 +70,7 @@ class GlassTable(ft.Container):
             )
         else:
             content = ft.Container(
-                content=EmptyState(empty_title, empty_message),
+                content=EmptyState(t(empty_title), t(empty_message)),
                 padding=Metrics.SPACING_LARGE,
                 alignment=ft.Alignment.CENTER,
             )
