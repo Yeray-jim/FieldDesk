@@ -51,6 +51,16 @@ repositorios no conocen la UI.
 | Configuración | `app/config` | `Settings` centralizado, URL de base de datos y logging. |
 | Utilidades | `app/utils` | Constantes, validadores, fechas y manejo de archivos. |
 
+### Convenciones de los repositorios
+
+- Cada repositorio hereda de `BaseRepository` y declara el atributo `model`.
+- Reciben una `Session` abierta y **nunca** hacen `commit`: el límite
+  transaccional pertenece a `Database.session`.
+- Las escrituras hacen `flush` para exponer de inmediato las claves primarias
+  y los errores de integridad.
+- Las consultas específicas (búsquedas, filtros, conteos) viven en el
+  repositorio del agregado correspondiente, no en los servicios ni en la UI.
+
 ## 4. Flujo de datos
 
 Ejemplo: registrar un cliente.
