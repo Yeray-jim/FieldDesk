@@ -126,6 +126,7 @@ class FakePage:
         self.dark_theme = None
         self.theme_mode = None
         self.platform_brightness = ft.Brightness.LIGHT
+        self.platform = ft.PagePlatform.LINUX
         self.bgcolor = None
         self.padding = None
         self.spacing = None

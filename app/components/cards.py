@@ -8,6 +8,7 @@ from app.components.theme import (
     FontSize,
     Metrics,
     Palette,
+    glass_blur,
     glass_border,
     glass_surface_color,
     soft_shadow,
@@ -34,7 +35,7 @@ class GlassCard(ft.Container):
             "bgcolor": glass_surface_color(),
             "border": glass_border(),
             "border_radius": Metrics.RADIUS,
-            "blur": ft.Blur(18, 18),
+            "blur": glass_blur(),
             "shadow": soft_shadow(),
         }
         if col is not None:

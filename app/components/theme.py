@@ -46,6 +46,7 @@ _DARK: dict[str, str] = {
 }
 
 _DARK_MODE = False
+_MOBILE = False
 
 
 class Palette:
@@ -105,6 +106,22 @@ def is_dark() -> bool:
     return _DARK_MODE
 
 
+def is_mobile() -> bool:
+    """Return whether the app is running on a mobile platform."""
+    return _MOBILE
+
+
+def glass_blur() -> ft.Blur | None:
+    """Return the blur effect for glass surfaces.
+
+    Blur is very expensive on mobile GPUs, so it is skipped there and the
+    translucent surface colour is used instead.
+    """
+    if _MOBILE:
+        return None
+    return ft.Blur(18, 18)
+
+
 def background_gradient() -> ft.LinearGradient:
     """Return the application background gradient."""
     return ft.LinearGradient(
@@ -156,6 +173,14 @@ def glass_border() -> ft.Border:
 
 def soft_shadow() -> ft.BoxShadow:
     """Return the soft shadow used by glass surfaces."""
+    if _MOBILE:
+        opacity = 0.35 if _DARK_MODE else 0.14
+        return ft.BoxShadow(
+            blur_radius=8,
+            spread_radius=-4,
+            color=ft.Colors.with_opacity(opacity, "#000000"),
+            offset=ft.Offset(0, 3),
+        )
     opacity = 0.45 if _DARK_MODE else 0.18
     return ft.BoxShadow(
         blur_radius=18,
@@ -199,6 +224,7 @@ def build_dark_theme() -> ft.Theme:
 
 def apply_theme(page: ft.Page) -> None:
     """Resolve and apply the active palette and page defaults."""
+    global _MOBILE
     mode = page.theme_mode
     if mode == ft.ThemeMode.DARK:
         dark = True
@@ -207,6 +233,12 @@ def apply_theme(page: ft.Page) -> None:
     else:
         dark = page.platform_brightness == ft.Brightness.DARK
 
+    platform = getattr(page, "platform", None)
+    _MOBILE = platform in (
+        ft.PagePlatform.ANDROID,
+        ft.PagePlatform.ANDROID_TV,
+        ft.PagePlatform.IOS,
+    )
     _apply_palette(dark)
     page.theme = build_theme()
     page.dark_theme = build_dark_theme()

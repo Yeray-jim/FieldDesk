@@ -69,8 +69,7 @@ def test_app_shell_renders_and_navigates(
     assert page.added, "la shell debe montar su raíz"
     assert page.update_count >= 1
 
-    event = SimpleNamespace(control=SimpleNamespace(selected_index=1))
-    shell._on_nav_change(event)  # noqa: SLF001 - exercised on purpose
+    shell._select_index(1)  # noqa: SLF001 - exercised on purpose
     assert page.update_count >= 2
 
 

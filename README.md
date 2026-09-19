@@ -5,7 +5,7 @@ administren clientes, ubicaciones, equipos, servicios, visitas, incidencias,
 materiales, evidencias fotográficas y reportes PDF. Todos los datos se
 almacenan localmente en **SQLite**; no requiere conexión a Internet.
 
-> Versión actual: **0.4.0** · Estado: **completo** (11/11 fases).
+> Versión actual: **0.4.1** · Estado: **completo** (11/11 fases).
 
 ## Características
 
@@ -21,7 +21,9 @@ almacenan localmente en **SQLite**; no requiere conexión a Internet.
   automático al finalizar el servicio.
 - Aplicación bilingüe (español e inglés) conmutable desde Ajustes.
 - Selección de fechas con calendario y horas en formato de 12 h con AM/PM.
-- Versión para Android (APK) lista para instalar y probar en el móvil.
+- Versión para Android (APK) lista para instalar y probar en el móvil, con
+  área segura para la barra de estado, navegación desplazable y efectos
+  ligeros para un rendimiento fluido.
 - Ubicaciones con dirección estructurada (estado, municipio, colonia,
   calle, lote, manzana y referencias).
 - Modo claro y oscuro conmutable desde Ajustes.
@@ -144,7 +146,7 @@ arrancará la interfaz Flet.
 
 Puedes probar FieldDesk en un móvil Android **sin instalar Python**:
 
-1. Descarga [`FieldDesk-0.4.0-arm64-v8a.apk`](FieldDesk-0.4.0-arm64-v8a.apk)
+1. Descarga [`FieldDesk-0.4.1-arm64-v8a.apk`](FieldDesk-0.4.1-arm64-v8a.apk)
    (Android 8+, ARM de 64 bits).
 2. Ábrelo en el móvil y permite «instalar aplicaciones de orígenes
    desconocidos» si el sistema lo solicita.
@@ -153,7 +155,7 @@ Para generar el APK tú mismo:
 
 ```bash
 flet build apk --project FieldDesk --artifact FieldDesk --org com.fielddesk \
-  --module-name main --build-version 0.4.0 --arch arm64-v8a
+  --module-name main --build-version 0.4.1 --arch arm64-v8a
 ```
 
 El primer build descarga e instala Flutter, el JDK y el SDK de Android. En

@@ -56,6 +56,7 @@ class AppNavigationRail(ft.NavigationRail):
             min_width=96,
             leading=leading,
             group_alignment=-0.9,
+            scrollable=True,
         )
 
 
@@ -86,3 +87,80 @@ class AppNavigationBar(ft.NavigationBar):
             indicator_color=ft.Colors.with_opacity(0.14, Palette.PRIMARY),
             label_behavior=ft.NavigationBarLabelBehavior.ONLY_SHOW_SELECTED,
         )
+
+
+class AppBottomBar(ft.Container):
+    """A horizontally scrollable bottom navigation bar for mobile.
+
+    Unlike the Material ``NavigationBar`` it scrolls, so every destination
+    stays reachable on small screens and in landscape orientation.
+    """
+
+    def __init__(
+        self,
+        items: list[NavigationItem],
+        *,
+        selected_index: int = 0,
+        on_select: Callable[[int], None] | None = None,
+    ) -> None:
+        self._items = items
+        self._on_select = on_select
+        self._selected = selected_index
+        self._row = ft.Row(
+            controls=self._buttons(),
+            spacing=2,
+            scroll=ft.ScrollMode.AUTO,
+            alignment=ft.MainAxisAlignment.CENTER,
+        )
+        super().__init__(
+            content=self._row,
+            bgcolor=chrome_color(),
+            padding=ft.Padding.symmetric(vertical=4, horizontal=4),
+        )
+
+    def _buttons(self) -> list[ft.Control]:
+        buttons: list[ft.Control] = []
+        for index, item in enumerate(self._items):
+            selected = index == self._selected
+            icon = item.selected_icon if selected else item.icon
+            color = Palette.PRIMARY if selected else Palette.TEXT_MUTED
+            buttons.append(
+                ft.Container(
+                    content=ft.Column(
+                        controls=[
+                            ft.Icon(icon, color=color, size=22),
+                            ft.Text(
+                                t(item.label),
+                                size=10,
+                                color=color,
+                                max_lines=1,
+                                overflow=ft.TextOverflow.ELLIPSIS,
+                            ),
+                        ],
+                        spacing=2,
+                        alignment=ft.MainAxisAlignment.CENTER,
+                        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                    ),
+                    width=84,
+                    padding=ft.Padding.symmetric(vertical=6, horizontal=6),
+                    border_radius=Metrics.RADIUS,
+                    bgcolor=(
+                        ft.Colors.with_opacity(0.14, Palette.PRIMARY)
+                        if selected
+                        else None
+                    ),
+                    alignment=ft.Alignment.CENTER,
+                    tooltip=item.label,
+                    on_click=lambda _event, i=index: self._select(i),
+                )
+            )
+        return buttons
+
+    def _select(self, index: int) -> None:
+        if self._on_select is not None:
+            self._on_select(index)
+
+    def set_selected(self, index: int) -> None:
+        """Update the highlighted destination without rebuilding the shell."""
+        self._selected = index
+        self._row.controls = self._buttons()

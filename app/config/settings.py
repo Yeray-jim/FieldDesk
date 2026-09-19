@@ -13,7 +13,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 APP_NAME = "FieldDesk"
-APP_VERSION = "0.4.0"
+APP_VERSION = "0.4.1"
 
 _PROJECT_ROOT = Path(__file__).resolve().parents[2]
 

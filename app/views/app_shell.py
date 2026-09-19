@@ -10,7 +10,7 @@ import flet as ft
 from app.components.buttons import primary_button
 from app.components.cards import EmptyState, GlassCard
 from app.components.navigation import (
-    AppNavigationBar,
+    AppBottomBar,
     AppNavigationRail,
     NavigationItem,
 )
@@ -106,6 +106,7 @@ class AppShell:
         self._is_mobile = False
         self._content = ft.Container(expand=True)
         self._root: ft.Container | None = None
+        self._safe_area: ft.SafeArea | None = None
 
     def build_root(self) -> ft.Container:
         """Build (but do not mount) the root container of the shell."""
@@ -114,10 +115,16 @@ class AppShell:
             content=self._build_view(self._selected),
             expand=True,
         )
+        self._safe_area = ft.SafeArea(
+            content=self._build_body(),
+            avoid_intrusions_top=True,
+            avoid_intrusions_bottom=True,
+            expand=True,
+        )
         self._root = ft.Container(
             expand=True,
             gradient=background_gradient(),
-            content=self._build_body(),
+            content=self._safe_area,
         )
         return self._root
 
@@ -168,10 +175,10 @@ class AppShell:
                 controls=[
                     self._app_bar(),
                     ft.Container(content=self._content, expand=True),
-                    AppNavigationBar(
+                    AppBottomBar(
                         self._items,
                         selected_index=self._selected,
-                        on_change=self._on_nav_change,
+                        on_select=self._select_index,
                     ),
                 ],
                 spacing=0,
@@ -181,7 +188,7 @@ class AppShell:
         rail = AppNavigationRail(
             self._items,
             selected_index=self._selected,
-            on_change=self._on_nav_change,
+            on_change=self._on_rail_change,
             leading=self._brand(),
         )
         return ft.Row(
@@ -241,8 +248,10 @@ class AppShell:
             padding=ft.Padding.only(top=20, bottom=Metrics.SPACING_SMALL),
         )
 
-    def _on_nav_change(self, event: ft.ControlEvent) -> None:
-        index = event.control.selected_index
+    def _on_rail_change(self, event: ft.ControlEvent) -> None:
+        self._select_index(event.control.selected_index)
+
+    def _select_index(self, index: int | None) -> None:
         if index is None or index == self._selected:
             return
         self._selected = index
@@ -264,5 +273,5 @@ class AppShell:
         )
         if self._root is not None:
             self._root.gradient = background_gradient()
-            self._root.content = self._build_body()
+            self._safe_area.content = self._build_body()
         self._page.update()
