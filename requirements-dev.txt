@@ -1,0 +1,4 @@
+# FieldDesk development dependencies.
+-r requirements.txt
+
+pytest==9.1.1          # Test runner for unit and integration tests.

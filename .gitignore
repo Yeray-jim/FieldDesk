@@ -1,0 +1,53 @@
+# Byte-compiled / optimized / cache files
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Environment variables and secrets
+.env
+*.env
+
+# SQLite databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Backups (keep the folder, ignore the archives)
+storage/backups/*
+!storage/backups/.gitkeep
+
+# User generated evidence and documents (keep the folders)
+storage/images/*
+storage/documents/*
+!storage/images/.gitkeep
+!storage/documents/.gitkeep
+
+# Logs (keep the folder, ignore the files)
+storage/logs/*
+!storage/logs/.gitkeep
+
+# Testing and coverage artifacts
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Packaging / build output
+build/
+dist/
+*.egg-info/
+
+# Operating system and editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*~

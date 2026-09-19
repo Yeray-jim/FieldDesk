@@ -1,0 +1,11 @@
+# Migraciones de FieldDesk
+
+Este directorio contiene el entorno de migraciones de Alembic.
+
+```bash
+alembic upgrade head                              # aplicar migraciones
+alembic revision --autogenerate -m "mensaje"      # crear una migración
+alembic downgrade -1                              # revertir la última
+```
+
+La URL de base de datos se toma de `app.config.settings.settings.database_url`.
