@@ -52,13 +52,16 @@ automáticamente.
 ## Testing
 
 ```bash
-pytest                      # suite completa
-pytest -m unit              # pruebas unitarias
-pytest -m integration       # pruebas de integración
-pytest --cov=app            # cobertura (si se instala pytest-cov)
+pytest                              # suite completa
+pytest -m unit                      # pruebas unitarias
+pytest -m integration               # pruebas de integración
+pytest --cov=app --cov-report=term-missing   # cobertura
 ```
 
-Los tests usan rutas temporales (`tmp_path`) para no tocar los datos reales.
+Los tests usan rutas temporales (`tmp_path`) para no tocar los datos reales y
+cubren servicios de negocio, repositorios, modelos, migraciones, utilidades,
+componentes de interfaz y flujos CRUD. `pytest-cov` está en
+`requirements-dev.txt`.
 
 ## Migraciones
 

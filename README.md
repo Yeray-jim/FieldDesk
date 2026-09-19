@@ -159,7 +159,7 @@ Consulta el manual de usuario en [`docs/user/manual.md`](docs/user/manual.md).
 - [x] Fase 7 — Evidencias fotográficas.
 - [x] Fase 8 — Reportes PDF.
 - [x] Fase 9 — Backup y restauración.
-- [ ] Fase 10 — Testing completo.
+- [x] Fase 10 — Testing completo.
 - [ ] Fase 11 — Documentación final.
 
 ## Licencia

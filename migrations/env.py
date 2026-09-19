@@ -13,8 +13,10 @@ from app.database.base import Base
 
 config = context.config
 
-# Always use the application's centralized database URL.
-config.set_main_option("sqlalchemy.url", settings.database_url)
+# An explicit URL (set programmatically) wins; otherwise fall back to the
+# centralized application settings so environment overrides are respected.
+database_url = config.attributes.get("database_url") or settings.database_url
+config.set_main_option("sqlalchemy.url", database_url)
 
 if config.config_file_name is not None and config.attributes.get(
     "configure_logger", True

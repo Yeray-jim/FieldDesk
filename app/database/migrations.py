@@ -23,6 +23,7 @@ def run_migrations(settings: Settings) -> None:
         "script_location", str(settings.project_root / "migrations")
     )
     config.set_main_option("sqlalchemy.url", settings.database_url)
+    config.attributes["database_url"] = settings.database_url
     config.attributes["configure_logger"] = False
 
     logger.info("Applying database migrations")

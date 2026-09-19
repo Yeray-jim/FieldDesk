@@ -21,8 +21,7 @@ sincronizada con el código real en cada fase del desarrollo.
 
 ## Estado del proyecto
 
-Versión **0.1.0** — Fase 9 (Backup). La aplicación permite crear y restaurar
-copias de seguridad completas (base de datos + imágenes + documentos) en
-formato ZIP, con validación previa, copia de seguridad automática antes de
-restaurar y verificación de integridad. Quedan el testing final y la
-documentación de cierre (Fases 10 y 11).
+Versión **0.1.0** — Fase 10 (Testing). La suite cuenta con 141 pruebas y una
+cobertura del 87 % sobre el código de `app/`. Se han corregido los errores
+detectados (entre ellos, que `migrations/env.py` ignoraba una URL de base de
+datos pasada programáticamente). Queda la documentación de cierre (Fase 11).
