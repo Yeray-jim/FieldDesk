@@ -33,3 +33,24 @@ def combine(day: date, moment: time | None) -> datetime | None:
     if moment is None:
         return None
     return datetime.combine(day, moment)
+
+
+def format_date(value: date | datetime | None) -> str:
+    """Format a date as ``dd/mm/yyyy`` for display."""
+    if value is None:
+        return "—"
+    return value.strftime("%d/%m/%Y")
+
+
+def format_datetime(value: datetime | None) -> str:
+    """Format a datetime as ``dd/mm/yyyy HH:MM`` for display."""
+    if value is None:
+        return "—"
+    return value.strftime("%d/%m/%Y %H:%M")
+
+
+def format_time(value: time | None) -> str:
+    """Format a time as ``HH:MM`` for display."""
+    if value is None:
+        return "—"
+    return value.strftime("%H:%M")

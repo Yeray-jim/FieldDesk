@@ -140,7 +140,33 @@ def on_save_click(self, event: ft.ControlEvent) -> None:
   `storage/logs/`.
 - No se utiliza `print` como mecanismo de diagnóstico.
 
-## 10. Decisiones arquitectónicas
+## 10. Interfaz y sistema de diseño
+
+La capa de interfaz vive en `app/views` (pantallas) y `app/components`
+(componentes reutilizables). Se apoya en un sistema visual único:
+
+- **Tema**: tokens de color, espaciado, radios y efectos en
+  `app/components/theme.py` (glassmorphism moderado: superficies blancas
+  translúcidas, desenfoque suave y sombra ligera).
+- **Componentes**: `GlassCard`, `StatCard`, `StatusBadge`,
+  `GlassTextField`, `GlassDropdown`, `GlassTable`, `GlassDialog`,
+  botones consistentes y navegación responsiva.
+- **Estado y color**: los estados se comunican siempre con texto además de
+  color (`StatusBadge`), por accesibilidad.
+- **Shell responsivo**: `app/views/app_shell.py` usa un `NavigationRail` en
+  escritorio y una `NavigationBar` inferior en móvil, conmutando según el
+  ancho de la página.
+- **Eventos finos**: los callbacks de los controles delegan en los servicios;
+  no contienen lógica de negocio.
+- **Feedback**: los errores de dominio se muestran como avisos claros
+  (`notify`), nunca como tracebacks, y las acciones destructivas piden
+  confirmación (`confirm_dialog`).
+
+Las pantallas de entidad se integran con los servicios en las siguientes
+fases; el panel de control (`DashboardView`) ya consume los servicios para
+mostrar métricas y actividad reciente.
+
+## 11. Decisiones arquitectónicas
 
 Las decisiones relevantes y su justificación se registran en
 [`decisions.md`](decisions.md).

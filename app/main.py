@@ -1,9 +1,7 @@
 """FieldDesk application entry point.
 
-This module bootstraps the application: it configures logging, guarantees that
-runtime directories exist and launches the Flet user interface. Functional
-screens are added in later development phases; for now the entry point renders
-a minimal placeholder view so the project can be executed and verified.
+Bootstraps logging, guarantees runtime directories exist, applies pending
+database migrations and launches the responsive Flet interface.
 """
 
 from __future__ import annotations
@@ -13,19 +11,23 @@ import logging
 import flet as ft
 
 from app.config import configure_logging, settings
+from app.database import Database
+from app.database.migrations import run_migrations
+from app.services import Services
 from app.utils.constants import (
-    APP_TAGLINE,
     DEFAULT_WINDOW_HEIGHT,
     DEFAULT_WINDOW_MIN_HEIGHT,
     DEFAULT_WINDOW_MIN_WIDTH,
     DEFAULT_WINDOW_WIDTH,
 )
+from app.views.app_shell import AppShell
+from app.views.context import AppContext
 
 logger = logging.getLogger(__name__)
 
 
 def _configure_window(page: ft.Page) -> None:
-    """Apply the default window configuration for desktop platforms."""
+    """Apply the default desktop window configuration."""
     page.title = f"{settings.app_name} {settings.app_version}"
     page.window.width = DEFAULT_WINDOW_WIDTH
     page.window.height = DEFAULT_WINDOW_HEIGHT
@@ -33,56 +35,34 @@ def _configure_window(page: ft.Page) -> None:
     page.window.min_height = DEFAULT_WINDOW_MIN_HEIGHT
 
 
-def _build_placeholder() -> ft.Control:
-    """Build the temporary welcome view shown during early development."""
-    return ft.Container(
-        expand=True,
-        alignment=ft.Alignment.CENTER,
-        padding=40,
-        content=ft.Column(
-            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-            alignment=ft.MainAxisAlignment.CENTER,
-            spacing=12,
-            controls=[
-                ft.Icon(ft.Icons.HANDYMAN_OUTLINED, size=64),
-                ft.Text(
-                    settings.app_name,
-                    size=32,
-                    weight=ft.FontWeight.BOLD,
-                ),
-                ft.Text(APP_TAGLINE, size=16),
-                ft.Text(
-                    f"Versión {settings.app_version} — Fase 1 (Arquitectura)",
-                    size=12,
-                    italic=True,
-                ),
-            ],
-        ),
-    )
-
-
-def main(page: ft.Page) -> None:
-    """Render the application on the given page.
-
-    Args:
-        page: Flet page provided by the runtime.
-    """
+def build_app(page: ft.Page, database: Database) -> None:
+    """Build the application on the given Flet page."""
     _configure_window(page)
-    page.add(_build_placeholder())
-    logger.info("FieldDesk interface ready on platform %s", page.platform)
+    services = Services(database, settings)
+    context = AppContext(page=page, settings=settings, services=services)
+    AppShell(context).render()
 
 
 def run() -> None:
     """Configure the application and start the Flet runtime."""
     configure_logging(settings)
     settings.ensure_directories()
+    run_migrations(settings)
+
+    database = Database(settings.database_url, echo=settings.debug)
     logger.info(
         "Starting %s %s (%s)",
         settings.app_name,
         settings.app_version,
         settings.environment,
     )
-    ft.run(main, assets_dir=str(settings.project_root / "assets"))
+    try:
+        ft.run(
+            lambda page: build_app(page, database),
+            assets_dir=str(settings.project_root / "assets"),
+        )
+    finally:
+        database.dispose()
 
 
 if __name__ == "__main__":
