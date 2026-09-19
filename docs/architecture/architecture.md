@@ -61,6 +61,20 @@ repositorios no conocen la UI.
 - Las consultas específicas (búsquedas, filtros, conteos) viven en el
   repositorio del agregado correspondiente, no en los servicios ni en la UI.
 
+### Convenciones de los servicios
+
+- Cada servicio hereda de `BaseService` y recibe un `Database`.
+- Cada método abre su propia unidad de trabajo con `_repositories()`, que
+  crea una sesión y un bundle `Repositories`; la sesión confirma o revierte
+  automáticamente al salir del bloque.
+- La validación de entrada se realiza con esquemas Pydantic antes de tocar la
+  base de datos.
+- Las reglas de negocio lanzan excepciones de dominio
+  (`ValidationError`, `NotFoundError`, `ConflictError`, `StorageError`) con
+  mensajes comprensibles para el usuario.
+- Los servicios comprueban las relaciones antes de eliminar y explican el
+  motivo del bloqueo.
+
 ## 4. Flujo de datos
 
 Ejemplo: registrar un cliente.

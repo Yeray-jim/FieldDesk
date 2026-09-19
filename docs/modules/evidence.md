@@ -1,5 +1,8 @@
 # Módulo: Evidencias
 
+> Estado: **servicio implementado** (Fase 4); la interfaz de selección y
+> visualización llega en la Fase 7.
+
 ## Propósito
 
 Asociar fotografías a los servicios como respaldo visual del trabajo

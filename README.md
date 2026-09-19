@@ -153,7 +153,7 @@ Consulta el manual de usuario en [`docs/user/manual.md`](docs/user/manual.md).
 - [x] Fase 1 — Arquitectura y estructura base.
 - [x] Fase 2 — Base de datos (SQLAlchemy + Alembic).
 - [x] Fase 3 — Repositorios.
-- [ ] Fase 4 — Servicios de negocio.
+- [x] Fase 4 — Servicios de negocio.
 - [ ] Fase 5 — Interfaz (tema, componentes, navegación, dashboard).
 - [ ] Fase 6 — Integración UI ↔ servicios.
 - [ ] Fase 7 — Evidencias fotográficas.

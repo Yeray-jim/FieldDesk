@@ -32,6 +32,11 @@ class ServiceRepository(BaseRepository[Service]):
         )
         return list(self._session.scalars(statement).all())
 
+    def list_all_ordered(self) -> list[Service]:
+        """Return every service, most recent first."""
+        statement = select(Service).order_by(Service.created_at.desc())
+        return list(self._session.scalars(statement).all())
+
     def list_by_status(self, status: ServiceStatus) -> list[Service]:
         """Return services in a given lifecycle state."""
         statement = (

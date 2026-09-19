@@ -1,5 +1,7 @@
 # Módulo: Ubicaciones
 
+> Estado: **implementado** (servicio de negocio en la Fase 4).
+
 ## Propósito
 
 Representar las sedes o instalaciones físicas de un cliente donde residen los

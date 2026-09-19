@@ -1,5 +1,7 @@
 # Módulo: Reportes (PDF)
 
+> Estado: **pendiente** (Fase 8).
+
 ## Propósito
 
 Generar un reporte PDF profesional de un servicio que reúna toda la

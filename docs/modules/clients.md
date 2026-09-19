@@ -1,5 +1,7 @@
 # Módulo: Clientes
 
+> Estado: **implementado** (servicio de negocio en la Fase 4).
+
 ## Propósito
 
 Gestionar la información de las empresas o personas a las que el técnico

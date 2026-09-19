@@ -1,5 +1,7 @@
 # Módulo: Materiales
 
+> Estado: **implementado** (servicio de negocio en la Fase 4).
+
 ## Propósito
 
 Mantener un catálogo de materiales y registrar cuáles se consumen en cada

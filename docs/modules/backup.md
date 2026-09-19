@@ -1,5 +1,7 @@
 # Módulo: Backup y restauración
 
+> Estado: **pendiente** (Fase 9).
+
 ## Propósito
 
 Proteger la información del técnico permitiendo respaldar y restaurar todos

@@ -1,5 +1,7 @@
 # Módulo: Visitas
 
+> Estado: **implementado** (servicio de negocio en la Fase 4).
+
 ## Propósito
 
 Registrar cada visita técnica realizada en el marco de un servicio, con su

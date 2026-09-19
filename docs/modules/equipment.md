@@ -1,5 +1,7 @@
 # Módulo: Equipos
 
+> Estado: **implementado** (servicio de negocio en la Fase 4).
+
 ## Propósito
 
 Registrar los equipos instalados en cada ubicación y mantener su estado a lo

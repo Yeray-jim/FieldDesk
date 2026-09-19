@@ -21,7 +21,8 @@ sincronizada con el código real en cada fase del desarrollo.
 
 ## Estado del proyecto
 
-Versión **0.1.0** — Fase 3 (Repositorios). La estructura, la configuración,
-el punto de entrada, los modelos ORM, la conexión SQLite, las migraciones de
-Alembic y la capa de repositorios están operativos. Los servicios de negocio y
-la interfaz se implementan en las fases posteriores.
+Versión **0.1.0** — Fase 4 (Servicios de negocio). Están operativos la
+estructura, la configuración, el punto de entrada, los modelos ORM, la conexión
+SQLite, las migraciones de Alembic, la capa de repositorios y los servicios de
+negocio con validación Pydantic y reglas de dominio. La interfaz se implementa
+en las fases posteriores.

@@ -1,5 +1,7 @@
 # Módulo: Incidencias
 
+> Estado: **implementado** (servicio de negocio en la Fase 4).
+
 ## Propósito
 
 Documentar problemas o fallos detectados en un equipo, opcionalmente ligados a

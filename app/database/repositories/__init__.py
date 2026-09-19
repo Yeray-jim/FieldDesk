@@ -10,6 +10,7 @@ from app.database.repositories.evidence_repository import EvidenceRepository
 from app.database.repositories.incident_repository import IncidentRepository
 from app.database.repositories.location_repository import LocationRepository
 from app.database.repositories.material_repository import MaterialRepository
+from app.database.repositories.registry import Repositories
 from app.database.repositories.service_material_repository import (
     ServiceMaterialRepository,
 )
@@ -24,6 +25,7 @@ __all__ = [
     "IncidentRepository",
     "LocationRepository",
     "MaterialRepository",
+    "Repositories",
     "ServiceMaterialRepository",
     "ServiceRepository",
     "VisitRepository",

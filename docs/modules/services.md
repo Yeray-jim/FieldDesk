@@ -1,5 +1,7 @@
 # Módulo: Servicios
 
+> Estado: **implementado** (servicio de negocio en la Fase 4).
+
 ## Propósito
 
 Representar los trabajos técnicos solicitados para un equipo. Es el eje
