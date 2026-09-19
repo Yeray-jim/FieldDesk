@@ -21,7 +21,8 @@ sincronizada con el código real en cada fase del desarrollo.
 
 ## Estado del proyecto
 
-Versión **0.1.0** — Fase 10 (Testing). La suite cuenta con 141 pruebas y una
-cobertura del 87 % sobre el código de `app/`. Se han corregido los errores
-detectados (entre ellos, que `migrations/env.py` ignoraba una URL de base de
-datos pasada programáticamente). Queda la documentación de cierre (Fase 11).
+Versión **0.1.0** — Proyecto completo (11/11 fases). Todas las funcionalidades
+están implementadas y probadas: gestión completa, evidencias fotográficas,
+reportes PDF, historial por equipo, exportación CSV, backup/restauración y
+datos de demostración opcionales. La suite tiene 147 pruebas con una cobertura
+del 87 % sobre `app/`.

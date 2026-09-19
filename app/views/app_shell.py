@@ -105,9 +105,8 @@ class AppShell:
         self._content = ft.Container(expand=True)
         self._root: ft.Container | None = None
 
-    def render(self) -> None:
-        """Apply the theme and mount the shell on the page."""
-        apply_theme(self._page)
+    def build_root(self) -> ft.Container:
+        """Build (but do not mount) the root container of the shell."""
         self._is_mobile = self._detect_mobile()
         self._content = ft.Container(
             content=self._build_view(self._selected),
@@ -118,8 +117,14 @@ class AppShell:
             gradient=background_gradient(),
             content=self._build_body(),
         )
+        return self._root
+
+    def render(self) -> None:
+        """Apply the theme and mount the shell on the page."""
+        apply_theme(self._page)
+        root = self.build_root()
         self._page.on_resize = self._on_resize
-        self._page.add(self._root)
+        self._page.add(root)
         self._page.update()
 
     def _detect_mobile(self) -> bool:

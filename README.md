@@ -5,7 +5,7 @@ administren clientes, ubicaciones, equipos, servicios, visitas, incidencias,
 materiales, evidencias fotográficas y reportes PDF. Todos los datos se
 almacenan localmente en **SQLite**; no requiere conexión a Internet.
 
-> Versión actual: **0.1.0** (Fase 1 — Arquitectura).
+> Versión actual: **0.1.0** · Estado: **completo** (11/11 fases).
 
 ## Características
 
@@ -19,6 +19,23 @@ almacenan localmente en **SQLite**; no requiere conexión a Internet.
 - Datos de demostración opcionales para la presentación del proyecto.
 - Interfaz con estilo *glassmorphism* moderado y diseño responsivo
   (desktop y móvil).
+
+## Capturas de pantalla
+
+### Panel de control
+![Panel de control](docs/images/01_dashboard.png)
+
+### Clientes
+![Clientes](docs/images/02_clientes.png)
+
+### Servicios
+![Servicios](docs/images/03_servicios.png)
+
+### Incidencias
+![Incidencias](docs/images/04_incidencias.png)
+
+### Ajustes (backup, exportación y datos de demostración)
+![Ajustes](docs/images/05_ajustes.png)
 
 ## Tecnologías
 
@@ -112,10 +129,14 @@ arrancará la interfaz Flet.
 ## Testing
 
 ```bash
-pytest                 # toda la suite
-pytest -m unit         # solo pruebas unitarias
-pytest -m integration  # solo pruebas de integración
+pytest                                              # 147 pruebas
+pytest -m unit                                      # solo pruebas unitarias
+pytest -m integration                               # solo pruebas de integración
+pytest --cov=app --cov-report=term-missing          # cobertura (~87 %)
 ```
+
+La suite cubre servicios de negocio, repositorios, modelos, migraciones,
+utilidades, componentes de interfaz y flujos CRUD.
 
 ## Migraciones
 
@@ -140,6 +161,10 @@ sobrescribir los datos actuales. Ver [`docs/modules/backup.md`](docs/modules/bac
 
 Consulta el manual de usuario en [`docs/user/manual.md`](docs/user/manual.md).
 
+Para una demostración rápida abre **Ajustes → Cargar datos de demostración**
+(disponible solo con la base de datos vacía). Las capturas de este README se
+generan con `python scripts/capture_screenshots.py`.
+
 ## Documentación
 
 - [`docs/architecture/`](docs/architecture/) — arquitectura y decisiones.
@@ -160,7 +185,7 @@ Consulta el manual de usuario en [`docs/user/manual.md`](docs/user/manual.md).
 - [x] Fase 8 — Reportes PDF.
 - [x] Fase 9 — Backup y restauración.
 - [x] Fase 10 — Testing completo.
-- [ ] Fase 11 — Documentación final.
+- [x] Fase 11 — Documentación final.
 
 ## Licencia
 

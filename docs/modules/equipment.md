@@ -22,13 +22,23 @@ largo del tiempo.
 | `EquipmentRepository` | `database/repositories` | Persistencia. |
 | `EquipmentCreate` / `EquipmentUpdate` | `schemas` | Validación. |
 | `EquipmentService` | `services` | Reglas de negocio. |
+| `HistoryEntry` / `HistoryService` | `services` | Historial técnico cronológico. |
 | `EquipmentView` | `views` | Interfaz. |
+| `EquipmentHistoryDialog` | `views` | Historial del equipo en un diálogo. |
 
 ## Flujo
 
 ```text
 Ubicación → equipo → estado → servicios e incidencias → historial
 ```
+
+## Historial
+
+La acción **Ver historial** (menú de cada equipo) abre
+`EquipmentHistoryDialog`, que muestra en orden cronológico inverso los
+servicios, visitas, incidencias, materiales y evidencias del equipo.
+`HistoryService.get_equipment_history` agrega esos datos en una lista de
+`HistoryEntry` (fecha, tipo, título y detalle) sin exponer entidades ORM.
 
 ## Dependencias
 

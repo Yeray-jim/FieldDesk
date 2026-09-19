@@ -35,6 +35,8 @@ class SettingsView(BaseView):
                 SectionHeader("Ajustes", icon=ft.Icons.SETTINGS_OUTLINED),
                 self._appearance_card(),
                 self._backup_card(),
+                self._export_card(),
+                self._demo_card(),
                 self._information_card(),
                 self._storage_card(),
             ],
@@ -99,6 +101,55 @@ class SettingsView(BaseView):
                         ],
                         spacing=Metrics.SPACING_SMALL,
                         wrap=True,
+                    ),
+                ],
+                spacing=Metrics.SPACING,
+            )
+        )
+
+    def _export_card(self) -> GlassCard:
+        return GlassCard(
+            content=ft.Column(
+                controls=[
+                    SectionHeader(
+                        "Exportación", icon=ft.Icons.TABLE_VIEW_OUTLINED
+                    ),
+                    ft.Text(
+                        "Exporta clientes, equipos, servicios, incidencias y "
+                        "materiales a archivos CSV compatibles con Excel y "
+                        "LibreOffice.",
+                        size=FontSize.CAPTION,
+                        color=Palette.TEXT_MUTED,
+                    ),
+                    secondary_button(
+                        "Exportar a CSV",
+                        icon=ft.Icons.DOWNLOAD_OUTLINED,
+                        on_click=self._handle_export,
+                    ),
+                ],
+                spacing=Metrics.SPACING,
+            )
+        )
+
+    def _demo_card(self) -> GlassCard:
+        return GlassCard(
+            content=ft.Column(
+                controls=[
+                    SectionHeader(
+                        "Datos de demostración",
+                        icon=ft.Icons.AUTO_AWESOME_OUTLINED,
+                    ),
+                    ft.Text(
+                        "Carga clientes, ubicaciones, equipos, servicios e "
+                        "incidencias de ejemplo. Solo está disponible si la "
+                        "base de datos está vacía.",
+                        size=FontSize.CAPTION,
+                        color=Palette.TEXT_MUTED,
+                    ),
+                    secondary_button(
+                        "Cargar datos de demostración",
+                        icon=ft.Icons.DOWNLOAD_OUTLINED,
+                        on_click=self._handle_demo,
                     ),
                 ],
                 spacing=Metrics.SPACING,
@@ -205,6 +256,61 @@ class SettingsView(BaseView):
             confirm_label="Restaurar",
             on_confirm=lambda: self._restore(source),
         )
+
+    def _handle_export(self, _event: ft.ControlEvent) -> None:
+        try:
+            paths = self.services.exports.export_all()
+        except FieldDeskError as error:
+            notify(self.page, str(error), error=True)
+            return
+        except Exception:  # noqa: BLE001 - never leak a traceback
+            logger.exception("No se pudieron exportar los datos")
+            notify(
+                self.page,
+                "No se pudieron exportar los datos a CSV.",
+                error=True,
+            )
+            return
+        notify(
+            self.page,
+            f"Se exportaron {len(paths)} archivos CSV a "
+            f"{self.settings.documents_dir}.",
+        )
+
+    def _handle_demo(self, _event: ft.ControlEvent) -> None:
+        confirm_dialog(
+            self.page,
+            title="¿Cargar datos de demostración?",
+            message=(
+                "Se añadirán datos de ejemplo para la presentación. Esta "
+                "opción solo funciona en una base de datos vacía."
+            ),
+            confirm_label="Cargar",
+            danger=False,
+            on_confirm=self._load_demo,
+        )
+
+    def _load_demo(self) -> None:
+        try:
+            summary = self.services.demo.load()
+        except FieldDeskError as error:
+            notify(self.page, str(error), error=True)
+            return
+        except Exception:  # noqa: BLE001 - never leak a traceback
+            logger.exception("No se pudieron cargar los datos de demostración")
+            notify(
+                self.page,
+                "No se pudieron cargar los datos de demostración.",
+                error=True,
+            )
+            return
+        notify(
+            self.page,
+            "Datos cargados: "
+            f"{summary.clients} clientes, {summary.equipment} equipos, "
+            f"{summary.services} servicios.",
+        )
+        self.page.update()
 
     def _restore(self, source: str) -> None:
         try:

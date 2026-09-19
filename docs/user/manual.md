@@ -77,6 +77,12 @@ cronológico, sus servicios, visitas, incidencias, materiales y evidencias.
 Desde **Configuración** puedes exportar clientes, equipos, servicios,
 incidencias y materiales a CSV, compatible con Excel y LibreOffice.
 
+## Datos de demostración
+
+Si quieres explorar la aplicación con información de ejemplo, abre
+**Ajustes → Datos de demostración → Cargar datos de demostración**. La opción
+solo está disponible cuando la base de datos está vacía.
+
 ## Consejos
 
 - Comprueba siempre las acciones de eliminación: se te pedirá confirmación.

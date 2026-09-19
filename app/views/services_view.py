@@ -7,11 +7,9 @@ from pathlib import Path
 
 import flet as ft
 
-from app.components.buttons import icon_action_button
 from app.components.dialogs import notify
 from app.components.forms import FormField, GlassDropdown, GlassTextField
 from app.components.tables import badge_cell, text_cell
-from app.components.theme import Palette
 from app.database.models import Priority, ServiceStatus
 from app.schemas import ServiceCreate, ServiceUpdate
 from app.utils.exceptions import FieldDeskError
@@ -70,14 +68,11 @@ class ServicesView(CrudView):
         )
 
     def columns(self) -> list[str]:
-        return ["Servicio", "Cliente", "Equipo", "Prioridad", "Estado"]
+        return ["Servicio", "Equipo", "Prioridad", "Estado"]
 
     def render_row(self, record) -> list[ft.Control]:
         return [
             text_cell(record.service_type),
-            text_cell(
-                self._client_names.get(record.client_id, "—"), muted=True
-            ),
             text_cell(
                 self._equipment_names.get(record.equipment_id, "—"), muted=True
             ),
@@ -99,25 +94,24 @@ class ServicesView(CrudView):
         self._status_filter = event.control.value or ""
         self._reload()
 
-    def extra_row_actions(self, record) -> list[ft.Control]:
+    def extra_row_menu_items(self, record) -> list[ft.PopupMenuItem]:
         return [
-            icon_action_button(
-                ft.Icons.INVENTORY_2_OUTLINED,
-                "Materiales",
-                on_click=lambda _event, item=record: self._open_materials(item),
-                color=Palette.PRIMARY,
+            ft.PopupMenuItem(
+                content=ft.Text("Materiales"),
+                icon=ft.Icons.INVENTORY_2_OUTLINED,
+                on_click=lambda _event, item=record: self._open_materials(
+                    item
+                ),
             ),
-            icon_action_button(
-                ft.Icons.PHOTO_LIBRARY_OUTLINED,
-                "Evidencias",
+            ft.PopupMenuItem(
+                content=ft.Text("Evidencias"),
+                icon=ft.Icons.PHOTO_LIBRARY_OUTLINED,
                 on_click=lambda _event, item=record: self._open_evidence(item),
-                color=Palette.INFO,
             ),
-            icon_action_button(
-                ft.Icons.PICTURE_AS_PDF_OUTLINED,
-                "Reporte PDF",
+            ft.PopupMenuItem(
+                content=ft.Text("Reporte PDF"),
+                icon=ft.Icons.PICTURE_AS_PDF_OUTLINED,
                 on_click=lambda _event, item=record: self._open_report(item),
-                color=Palette.SUCCESS,
             ),
         ]
 

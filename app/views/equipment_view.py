@@ -9,6 +9,7 @@ from app.components.tables import badge_cell, text_cell
 from app.database.models import EquipmentStatus
 from app.schemas import EquipmentCreate, EquipmentUpdate
 from app.views.crud_view import CrudView
+from app.views.equipment_history_dialog import EquipmentHistoryDialog
 
 FULL = 12
 HALF = {"sm": 12, "md": 6}
@@ -87,6 +88,18 @@ class EquipmentView(CrudView):
     def _on_status_filter(self, event: ft.ControlEvent) -> None:
         self._status_filter = event.control.value or ""
         self._reload()
+
+    def extra_row_menu_items(self, record) -> list[ft.PopupMenuItem]:
+        return [
+            ft.PopupMenuItem(
+                content=ft.Text("Ver historial"),
+                icon=ft.Icons.HISTORY_OUTLINED,
+                on_click=lambda _event, item=record: self._open_history(item),
+            )
+        ]
+
+    def _open_history(self, record) -> None:
+        EquipmentHistoryDialog(self.page, self.services, record).show()
 
     def build_fields(self, record) -> list[FormField]:
         location_options = [

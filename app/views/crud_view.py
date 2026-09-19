@@ -71,8 +71,8 @@ class CrudView(BaseView):
         """Return optional filter controls for the toolbar."""
         return []
 
-    def extra_row_actions(self, record) -> list[ft.Control]:
-        """Return additional per-row action buttons."""
+    def extra_row_menu_items(self, record) -> list[ft.PopupMenuItem]:
+        """Return extra per-row actions rendered in an overflow menu."""
         return []
 
     def create_record(self, values: dict) -> None:
@@ -150,25 +150,34 @@ class CrudView(BaseView):
         )
 
     def _actions_cell(self, record) -> ft.Row:
-        return ft.Row(
-            controls=[
-                *self.extra_row_actions(record),
-                icon_action_button(
-                    ft.Icons.EDIT_OUTLINED,
-                    "Editar",
-                    on_click=lambda _event, item=record: self._open_edit(item),
-                ),
-                icon_action_button(
-                    ft.Icons.DELETE_OUTLINE,
-                    "Eliminar",
-                    on_click=lambda _event, item=record: self._confirm_delete(
-                        item
-                    ),
-                    color=Palette.DANGER,
-                ),
-            ],
-            spacing=0,
+        controls: list[ft.Control] = []
+        menu_items = self.extra_row_menu_items(record)
+        if menu_items:
+            controls.append(
+                ft.PopupMenuButton(
+                    icon=ft.Icons.MORE_VERT,
+                    tooltip="Más acciones",
+                    icon_color=Palette.TEXT_MUTED,
+                    icon_size=20,
+                    items=menu_items,
+                )
+            )
+        controls.append(
+            icon_action_button(
+                ft.Icons.EDIT_OUTLINED,
+                "Editar",
+                on_click=lambda _event, item=record: self._open_edit(item),
+            )
         )
+        controls.append(
+            icon_action_button(
+                ft.Icons.DELETE_OUTLINE,
+                "Eliminar",
+                on_click=lambda _event, item=record: self._confirm_delete(item),
+                color=Palette.DANGER,
+            )
+        )
+        return ft.Row(controls=controls, spacing=0)
 
     # ------------------------------------------------------------------
     # Data

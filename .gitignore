@@ -19,6 +19,9 @@ ENV/
 *.sqlite
 *.sqlite3
 
+# Throw-away database used by scripts/capture_screenshots.py
+storage/demo/
+
 # Backups (keep the folder, ignore the archives)
 storage/backups/*
 !storage/backups/.gitkeep

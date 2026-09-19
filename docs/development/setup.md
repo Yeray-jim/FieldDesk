@@ -89,6 +89,19 @@ flet build linux     # o windows / macos / apk / web
 
 El empaquetado se abordará en una fase de distribución posterior.
 
+## Datos de demostración y capturas
+
+La aplicación puede cargar datos de ejemplo desde **Ajustes → Cargar datos de
+demostración** (solo con la base de datos vacía). Para regenerar las capturas
+del README:
+
+```bash
+python scripts/capture_screenshots.py
+```
+
+El script crea una base de datos temporal en `storage/demo/`, carga los datos
+de demostración y guarda las imágenes en `docs/images/`.
+
 ## Convenciones de código
 
 - PEP 8, nombres descriptivos y type hints en todo el código.

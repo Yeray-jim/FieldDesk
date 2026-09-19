@@ -8,8 +8,11 @@ classes.
 from app.services.backup_service import BackupManifest, BackupService
 from app.services.base_service import BaseService
 from app.services.clients_service import ClientService
+from app.services.demo_data import DemoDataService, DemoSummary
 from app.services.equipment_service import EquipmentService
 from app.services.evidence_service import EvidenceService
+from app.services.export_service import ExportService
+from app.services.history_service import HistoryEntry, HistoryService
 from app.services.incidents_service import IncidentService
 from app.services.locations_service import LocationService
 from app.services.materials_service import MaterialService
@@ -23,8 +26,13 @@ __all__ = [
     "BackupService",
     "BaseService",
     "ClientService",
+    "DemoDataService",
+    "DemoSummary",
     "EquipmentService",
     "EvidenceService",
+    "ExportService",
+    "HistoryEntry",
+    "HistoryService",
     "IncidentService",
     "LocationService",
     "MaterialService",

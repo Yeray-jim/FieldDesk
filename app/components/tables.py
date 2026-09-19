@@ -58,9 +58,9 @@ class GlassTable(ft.Container):
                 ],
                 heading_row_color=ft.Colors.with_opacity(0.06, "#0F172A"),
                 border_radius=Metrics.RADIUS,
-                column_spacing=24,
-                horizontal_margin=16,
-                data_row_min_height=52,
+                column_spacing=14,
+                horizontal_margin=8,
+                data_row_min_height=48,
                 data_text_style=ft.TextStyle(
                     size=FontSize.BODY, color=Palette.TEXT
                 ),
