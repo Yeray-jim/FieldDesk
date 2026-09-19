@@ -2,17 +2,24 @@
 
 from __future__ import annotations
 
+import logging
+from pathlib import Path
+
 import flet as ft
 
 from app.components.buttons import icon_action_button
+from app.components.dialogs import notify
 from app.components.forms import FormField, GlassDropdown, GlassTextField
 from app.components.tables import badge_cell, text_cell
 from app.components.theme import Palette
 from app.database.models import Priority, ServiceStatus
 from app.schemas import ServiceCreate, ServiceUpdate
+from app.utils.exceptions import FieldDeskError
 from app.views.crud_view import CrudView
 from app.views.service_evidence_dialog import ServiceEvidenceDialog
 from app.views.service_materials_dialog import ServiceMaterialsDialog
+
+logger = logging.getLogger(__name__)
 
 FULL = 12
 HALF = {"sm": 12, "md": 6}
@@ -106,6 +113,12 @@ class ServicesView(CrudView):
                 on_click=lambda _event, item=record: self._open_evidence(item),
                 color=Palette.INFO,
             ),
+            icon_action_button(
+                ft.Icons.PICTURE_AS_PDF_OUTLINED,
+                "Reporte PDF",
+                on_click=lambda _event, item=record: self._open_report(item),
+                color=Palette.SUCCESS,
+            ),
         ]
 
     def _open_materials(self, record) -> None:
@@ -118,6 +131,29 @@ class ServicesView(CrudView):
             record,
             file_picker=self.context.file_picker,
         ).show()
+
+    def _open_report(self, record) -> None:
+        try:
+            path = self.services.reports.generate_service_report(record.id)
+        except FieldDeskError as error:
+            notify(self.page, str(error), error=True)
+            return
+        except Exception:  # noqa: BLE001 - never leak a traceback
+            logger.exception("No se pudo generar el reporte")
+            notify(
+                self.page,
+                "No se pudo generar el reporte. Inténtalo nuevamente.",
+                error=True,
+            )
+            return
+        notify(self.page, f"Reporte generado: {path.name}")
+        self._launch(path)
+
+    def _launch(self, path: Path) -> None:
+        launcher = self.context.url_launcher
+        if launcher is None:
+            return
+        self.page.run_task(launcher.launch_url, path.as_uri())
 
     def build_fields(self, record) -> list[FormField]:
         client_options = [

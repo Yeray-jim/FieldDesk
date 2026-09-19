@@ -18,3 +18,4 @@ class AppContext:
     settings: Settings
     services: Services
     file_picker: ft.FilePicker | None = None
+    url_launcher: ft.UrlLauncher | None = None

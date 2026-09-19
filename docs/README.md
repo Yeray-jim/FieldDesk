@@ -21,8 +21,8 @@ sincronizada con el código real en cada fase del desarrollo.
 
 ## Estado del proyecto
 
-Versión **0.1.0** — Fase 7 (Evidencias). Además del CRUD completo y el panel
-de control, los servicios permiten adjuntar evidencias fotográficas (se
-guardan en disco y SQLite solo almacena metadatos), verlas en una galería con
-miniaturas y eliminarlas. Los reportes PDF y el backup llegan en las fases
-posteriores.
+Versión **0.1.0** — Fase 8 (Reportes PDF). Además del CRUD completo, el panel
+de control y las evidencias fotográficas, cada servicio puede generar un
+reporte PDF profesional (cliente, ubicación, equipo, servicio, visitas,
+incidencias, materiales y evidencias). El backup y la restauración llegan en
+la siguiente fase.

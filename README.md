@@ -157,7 +157,7 @@ Consulta el manual de usuario en [`docs/user/manual.md`](docs/user/manual.md).
 - [x] Fase 5 — Interfaz (tema, componentes, navegación, dashboard).
 - [x] Fase 6 — Integración UI ↔ servicios.
 - [x] Fase 7 — Evidencias fotográficas.
-- [ ] Fase 8 — Reportes PDF.
+- [x] Fase 8 — Reportes PDF.
 - [ ] Fase 9 — Backup y restauración.
 - [ ] Fase 10 — Testing completo.
 - [ ] Fase 11 — Documentación final.

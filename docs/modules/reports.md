@@ -1,6 +1,6 @@
 # Módulo: Reportes (PDF)
 
-> Estado: **pendiente** (Fase 8).
+> Estado: **completo** (Fase 8).
 
 ## Propósito
 
@@ -18,9 +18,10 @@ información relevante del trabajo de campo.
 
 | Clase | Capa | Responsabilidad |
 | ----- | ---- | --------------- |
-| `ReportService` | `services` | Recolecta datos y orquesta la generación. |
-| `ReportBuilder` | `services` | Composición del documento ReportLab. |
-| `ReportView` | `views` | Disparador y descarga. |
+| `ServiceReportData` | `services/report_builder` | Objeto de valor con todos los datos del reporte. |
+| `ReportBuilder` | `services/report_builder` | Compone el documento con ReportLab (platypus). |
+| `ReportService` | `services` | Recolecta el grafo del servicio y orquesta la generación. |
+| `ServicesView` | `views` | Acción «Reporte PDF» por servicio. |
 
 ## Contenido del reporte
 
@@ -40,13 +41,19 @@ Evidencias fotográficas
 
 ## Dependencias
 
-- Consume `ServiceService`, `IncidentService`, `MaterialService`,
-  `EvidenceService` y `VisitService`.
-- Usa ReportLab y Pillow.
+- Accede a los repositorios para recolectar cliente, ubicación, equipo,
+  servicio, visitas, incidencias, materiales y evidencias.
+- Usa ReportLab (composición) y Pillow (dimensiones de las imágenes).
+
+## Generación
+
+El PDF se guarda en `storage/documents/` con el nombre
+`Reporte_servicio_<id>_<fecha>.pdf` y se abre con el visor predeterminado del
+sistema a través de `UrlLauncher`.
 
 ## Ejemplo de uso
 
 ```python
-service = ReportService(...)
+service = ReportService(database, settings)
 pdf_path = service.generate_service_report(service_id=3)
 ```

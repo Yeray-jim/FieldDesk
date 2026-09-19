@@ -13,6 +13,7 @@ from app.services.incidents_service import IncidentService
 from app.services.locations_service import LocationService
 from app.services.materials_service import MaterialService
 from app.services.registry import Services
+from app.services.report_service import ReportService
 from app.services.services_service import ServiceService
 from app.services.visits_service import VisitService
 
@@ -24,6 +25,7 @@ __all__ = [
     "IncidentService",
     "LocationService",
     "MaterialService",
+    "ReportService",
     "ServiceService",
     "Services",
     "VisitService",
