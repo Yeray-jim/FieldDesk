@@ -155,7 +155,7 @@ Consulta el manual de usuario en [`docs/user/manual.md`](docs/user/manual.md).
 - [x] Fase 3 — Repositorios.
 - [x] Fase 4 — Servicios de negocio.
 - [x] Fase 5 — Interfaz (tema, componentes, navegación, dashboard).
-- [ ] Fase 6 — Integración UI ↔ servicios.
+- [x] Fase 6 — Integración UI ↔ servicios.
 - [ ] Fase 7 — Evidencias fotográficas.
 - [ ] Fase 8 — Reportes PDF.
 - [ ] Fase 9 — Backup y restauración.

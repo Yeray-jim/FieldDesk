@@ -38,6 +38,11 @@ class LocationService(BaseService):
                 raise NotFoundError(f"No existe la ubicación con id {location_id}.")
             return location
 
+    def list_locations(self) -> list[Location]:
+        """Return every location sorted by name."""
+        with self._repositories() as repositories:
+            return repositories.locations.list_all_ordered()
+
     def list_locations_by_client(self, client_id: int) -> list[Location]:
         """Return the locations of a client sorted by name."""
         with self._repositories() as repositories:

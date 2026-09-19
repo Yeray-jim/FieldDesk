@@ -1,6 +1,6 @@
 # Módulo: Visitas
 
-> Estado: **implementado** (servicio de negocio en la Fase 4).
+> Estado: **implementado** (servicio en Fase 4, interfaz integrada en Fase 6).
 
 ## Propósito
 

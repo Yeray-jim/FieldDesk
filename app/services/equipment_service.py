@@ -38,6 +38,11 @@ class EquipmentService(BaseService):
                 raise NotFoundError(f"No existe el equipo con id {equipment_id}.")
             return equipment
 
+    def list_equipment(self) -> list[Equipment]:
+        """Return every equipment sorted by name."""
+        with self._repositories() as repositories:
+            return repositories.equipment.list_all_ordered()
+
     def list_equipment_by_location(self, location_id: int) -> list[Equipment]:
         """Return the equipment installed at a location."""
         with self._repositories() as repositories:

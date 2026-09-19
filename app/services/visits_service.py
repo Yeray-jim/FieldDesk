@@ -38,6 +38,11 @@ class VisitService(BaseService):
                 raise NotFoundError(f"No existe la visita con id {visit_id}.")
             return visit
 
+    def list_visits(self) -> list[Visit]:
+        """Return every visit, most recent first."""
+        with self._repositories() as repositories:
+            return repositories.visits.list_all_ordered()
+
     def list_visits_by_service(self, service_id: int) -> list[Visit]:
         """Return the visits of a service, most recent first."""
         with self._repositories() as repositories:

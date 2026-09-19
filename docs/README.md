@@ -21,9 +21,8 @@ sincronizada con el código real en cada fase del desarrollo.
 
 ## Estado del proyecto
 
-Versión **0.1.0** — Fase 5 (Interfaz). Están operativos la estructura, la
-configuración, el punto de entrada, los modelos ORM, la conexión SQLite, las
-migraciones de Alembic, la capa de repositorios, los servicios de negocio y el
-sistema visual con navegación responsiva, componentes reutilizables y panel de
-control. La integración CRUD de las pantallas de entidad llega en las fases
-posteriores.
+Versión **0.1.0** — Fase 6 (Integración). La aplicación conecta la interfaz
+con los servicios y la base de datos: CRUD completo de clientes, ubicaciones,
+equipos, servicios, visitas, incidencias y materiales, gestión de materiales
+por servicio y panel de control con datos reales. Las evidencias fotográficas,
+los reportes PDF y el backup llegan en las fases posteriores.

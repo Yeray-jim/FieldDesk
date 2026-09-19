@@ -13,6 +13,13 @@ class VisitRepository(BaseRepository[Visit]):
 
     model = Visit
 
+    def list_all_ordered(self) -> list[Visit]:
+        """Return every visit, most recent first."""
+        statement = select(Visit).order_by(
+            Visit.visit_date.desc(), Visit.id.desc()
+        )
+        return list(self._session.scalars(statement).all())
+
     def list_by_service(self, service_id: int) -> list[Visit]:
         """Return the visits of a service, most recent first."""
         statement = (

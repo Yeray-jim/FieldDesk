@@ -13,6 +13,11 @@ class LocationRepository(BaseRepository[Location]):
 
     model = Location
 
+    def list_all_ordered(self) -> list[Location]:
+        """Return every location sorted by name."""
+        statement = select(Location).order_by(Location.name)
+        return list(self._session.scalars(statement).all())
+
     def list_by_client(self, client_id: int) -> list[Location]:
         """Return the locations of a client sorted by name."""
         statement = (

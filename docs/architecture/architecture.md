@@ -150,7 +150,12 @@ La capa de interfaz vive en `app/views` (pantallas) y `app/components`
   translúcidas, desenfoque suave y sombra ligera).
 - **Componentes**: `GlassCard`, `StatCard`, `StatusBadge`,
   `GlassTextField`, `GlassDropdown`, `GlassTable`, `GlassDialog`,
-  botones consistentes y navegación responsiva.
+  `FormDialog` (formulario validado), botones consistentes y navegación
+  responsiva.
+- **CRUD reutilizable**: `app/views/crud_view.py` implementa una vez el
+  listado, la búsqueda, el alta, la edición, el borrado con confirmación y el
+  manejo de errores. Cada pantalla de entidad solo declara sus columnas,
+  campos y llamadas al servicio (DRY).
 - **Estado y color**: los estados se comunican siempre con texto además de
   color (`StatusBadge`), por accesibilidad.
 - **Shell responsivo**: `app/views/app_shell.py` usa un `NavigationRail` en
@@ -162,9 +167,10 @@ La capa de interfaz vive en `app/views` (pantallas) y `app/components`
   (`notify`), nunca como tracebacks, y las acciones destructivas piden
   confirmación (`confirm_dialog`).
 
-Las pantallas de entidad se integran con los servicios en las siguientes
-fases; el panel de control (`DashboardView`) ya consume los servicios para
-mostrar métricas y actividad reciente.
+Las pantallas de clientes, ubicaciones, equipos, servicios, visitas,
+incidencias y materiales están conectadas de extremo a extremo
+(UI → servicios → repositorios → SQLite). El panel de control y la gestión de
+materiales por servicio también consumen los servicios reales.
 
 ## 11. Decisiones arquitectónicas
 

@@ -15,6 +15,11 @@ class IncidentRepository(BaseRepository[Incident]):
 
     model = Incident
 
+    def list_all_ordered(self) -> list[Incident]:
+        """Return every incident, most recent first."""
+        statement = select(Incident).order_by(Incident.created_at.desc())
+        return list(self._session.scalars(statement).all())
+
     def list_by_equipment(self, equipment_id: int) -> list[Incident]:
         """Return the incidents reported for an equipment."""
         statement = (

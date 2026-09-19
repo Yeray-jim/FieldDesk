@@ -53,6 +53,11 @@ class IncidentService(BaseService):
                 )
             return incident
 
+    def list_incidents(self) -> list[Incident]:
+        """Return every incident, most recent first."""
+        with self._repositories() as repositories:
+            return repositories.incidents.list_all_ordered()
+
     def list_incidents_by_equipment(self, equipment_id: int) -> list[Incident]:
         """Return the incidents reported for an equipment."""
         with self._repositories() as repositories:

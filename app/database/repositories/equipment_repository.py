@@ -16,6 +16,11 @@ class EquipmentRepository(BaseRepository[Equipment]):
 
     model = Equipment
 
+    def list_all_ordered(self) -> list[Equipment]:
+        """Return every equipment sorted by name."""
+        statement = select(Equipment).order_by(Equipment.name)
+        return list(self._session.scalars(statement).all())
+
     def list_by_location(self, location_id: int) -> list[Equipment]:
         """Return the equipment installed at a location."""
         statement = (
