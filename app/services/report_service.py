@@ -136,8 +136,13 @@ class ReportService(BaseService):
             return []
         return [
             ("Nombre", location.name),
-            ("Dirección", location.address),
-            ("Referencia", location.reference),
+            ("Estado", location.state),
+            ("Municipio", location.municipality),
+            ("Colonia / Fraccionamiento", location.neighborhood),
+            ("Calle y número", location.street),
+            ("Lote", location.lot),
+            ("Manzana", location.block),
+            ("Referencias", location.reference),
         ]
 
     @staticmethod

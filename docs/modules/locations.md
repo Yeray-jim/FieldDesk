@@ -10,7 +10,13 @@ equipos.
 ## Responsabilidades
 
 - Administrar las ubicaciones asociadas a un cliente.
+- Capturar la dirección de forma estructurada: estado, municipio, colonia o
+  fraccionamiento, calle y número, lote, manzana y referencias.
 - Servir de contexto para localizar equipos.
+
+El formulario de alta se reutiliza desde el formulario de equipos
+(`app/views/location_fields.py`), de modo que se puede crear una ubicación sin
+salir del alta de un equipo.
 
 ## Clases principales
 

@@ -59,7 +59,7 @@ def secondary_button(
         icon=icon,
         on_click=on_click,
         disabled=disabled,
-        style=_style(),
+        style=_style(color=Palette.TEXT),
         **extra,
     )
 
@@ -92,7 +92,7 @@ def ghost_button(
         icon=icon,
         on_click=on_click,
         disabled=disabled,
-        style=_style(),
+        style=_style(color=Palette.TEXT),
     )
 
 

@@ -10,13 +10,14 @@ from __future__ import annotations
 import logging
 from collections.abc import Callable
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Any
 
 import flet as ft
 from pydantic import ValidationError as PydanticValidationError
 
 from app.components.buttons import ghost_button, primary_button
-from app.components.dialogs import GlassDialog, notify
+from app.components.dialogs import GlassDialog, notify, open_dialog
 from app.components.theme import FontSize, Metrics, Palette, glass_surface_color
 from app.utils.exceptions import FieldDeskError
 
@@ -161,6 +162,125 @@ class GlassDropdown(ft.Dropdown):
     def clear_error(self) -> None:
         """Remove any inline validation error."""
         self.error_text = None
+
+
+class GlassDateField(ft.TextField):
+    """A read-only field that opens a calendar to pick a date."""
+
+    def __init__(
+        self,
+        page: ft.Page,
+        label: str,
+        *,
+        required: bool = False,
+        value: str | None = None,
+        error: str | None = None,
+        col: int | dict | None = None,
+    ) -> None:
+        self._page = page
+        self._picker = ft.DatePicker(
+            entry_mode=ft.DatePickerEntryMode.CALENDAR,
+            on_change=self._on_date_change,
+        )
+        extra: dict = {
+            "label": f"{label} *" if required else label,
+            "value": value,
+            "error": error,
+            "hint_text": "AAAA-MM-DD",
+            "read_only": True,
+            "suffix_icon": ft.Icons.CALENDAR_MONTH_OUTLINED,
+            "border": ft.OutlineInputBorder(),
+            "border_radius": Metrics.RADIUS_SMALL,
+            "filled": True,
+            "fill_color": glass_surface_color(),
+            "text_size": FontSize.BODY,
+            "color": Palette.TEXT,
+            "label_style": ft.TextStyle(color=Palette.TEXT),
+            "on_click": self._open_picker,
+            "content_padding": ft.Padding.symmetric(
+                horizontal=14, vertical=14
+            ),
+        }
+        if col is not None:
+            extra["col"] = col
+        super().__init__(**extra)
+
+    def _open_picker(self, _event: ft.ControlEvent) -> None:
+        open_dialog(self._page, self._picker)
+
+    def _on_date_change(self, event: ft.ControlEvent) -> None:
+        value = event.control.value
+        if value is None:
+            return
+        if isinstance(value, datetime):
+            value = value.date()
+        self.value = value.isoformat()
+        self._page.update()
+
+    def show_error(self, message: str) -> None:
+        """Display an inline validation error."""
+        self.error = message
+
+    def clear_error(self) -> None:
+        """Remove any inline validation error."""
+        self.error = None
+
+
+class GlassTimeField(ft.TextField):
+    """A read-only field that opens a clock to pick a time."""
+
+    def __init__(
+        self,
+        page: ft.Page,
+        label: str,
+        *,
+        required: bool = False,
+        value: str | None = None,
+        error: str | None = None,
+        col: int | dict | None = None,
+    ) -> None:
+        self._page = page
+        self._picker = ft.TimePicker(on_change=self._on_time_change)
+        extra: dict = {
+            "label": f"{label} *" if required else label,
+            "value": value,
+            "error": error,
+            "hint_text": "HH:MM",
+            "read_only": True,
+            "suffix_icon": ft.Icons.SCHEDULE_OUTLINED,
+            "border": ft.OutlineInputBorder(),
+            "border_radius": Metrics.RADIUS_SMALL,
+            "filled": True,
+            "fill_color": glass_surface_color(),
+            "text_size": FontSize.BODY,
+            "color": Palette.TEXT,
+            "label_style": ft.TextStyle(color=Palette.TEXT),
+            "on_click": self._open_picker,
+            "content_padding": ft.Padding.symmetric(
+                horizontal=14, vertical=14
+            ),
+        }
+        if col is not None:
+            extra["col"] = col
+        super().__init__(**extra)
+
+    def _open_picker(self, _event: ft.ControlEvent) -> None:
+        open_dialog(self._page, self._picker)
+
+    def _on_time_change(self, event: ft.ControlEvent) -> None:
+        value = event.control.value
+        if value is None:
+            return
+        self.value = value.strftime("%H:%M")
+        self._page.update()
+
+    def show_error(self, message: str) -> None:
+        """Display an inline validation error."""
+        self.error = message
+
+    def clear_error(self) -> None:
+        """Remove any inline validation error."""
+        self.error = None
 
 
 def form_actions(

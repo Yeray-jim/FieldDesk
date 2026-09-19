@@ -146,8 +146,13 @@ La capa de interfaz vive en `app/views` (pantallas) y `app/components`
 (componentes reutilizables). Se apoya en un sistema visual único:
 
 - **Tema**: tokens de color, espaciado, radios y efectos en
-  `app/components/theme.py` (glassmorphism moderado: superficies blancas
-  translúcidas, desenfoque suave y sombra ligera).
+  `app/components/theme.py`. El tema se resuelve en tiempo de ejecución
+  (`apply_theme`) entre paletas **clara y oscura**; el modo se elige en
+  Ajustes (sistema, claro u oscuro) y el shell se remonta para aplicar los
+  nuevos colores (glassmorphism moderado: superficies translúcidas,
+  desenfoque suave y sombra ligera).
+- **Fechas y horas**: `GlassDateField` y `GlassTimeField` abren el calendario
+  y el reloj nativos de Flet en lugar de escribir la fecha a mano.
 - **Componentes**: `GlassCard`, `StatCard`, `StatusBadge`,
   `GlassTextField`, `GlassDropdown`, `GlassTable`, `GlassDialog`,
   `FormDialog` (formulario validado), botones consistentes y navegación

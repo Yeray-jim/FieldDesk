@@ -44,8 +44,13 @@ erDiagram
 | id | Integer | PK |
 | client_id | Integer | FK → Client, obligatorio |
 | name | String | obligatorio |
-| address | String | opcional |
-| reference | String | opcional |
+| state | String | opcional (estado) |
+| municipality | String | opcional (municipio) |
+| neighborhood | String | opcional (colonia / fraccionamiento) |
+| street | String | opcional (calle y número) |
+| lot | String | opcional (lote) |
+| block | String | opcional (manzana) |
+| reference | String | opcional (referencias) |
 | notes | Text | opcional |
 | created_at / updated_at | DateTime | obligatorio |
 

@@ -32,6 +32,11 @@ largo del tiempo.
 Ubicación → equipo → estado → servicios e incidencias → historial
 ```
 
+En el alta de un equipo, el desplegable de ubicación incluye la opción
+**«+ Crear nueva ubicación…»**, que abre el formulario completo de ubicación
+(cliente y dirección estructurada) y deja la nueva ubicación seleccionada al
+terminar.
+
 ## Historial
 
 La acción **Ver historial** (menú de cada equipo) abre

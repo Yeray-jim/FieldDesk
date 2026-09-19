@@ -90,3 +90,34 @@ def test_delete_empty_location(database: Database) -> None:
 def test_get_or_raise_missing(database: Database) -> None:
     with pytest.raises(NotFoundError):
         LocationService(database).get_location_or_raise(999)
+
+
+@pytest.mark.integration
+def test_create_location_with_structured_address(database: Database) -> None:
+    client = ClientService(database).create_client(ClientCreate(name="Cliente"))
+    service = LocationService(database)
+
+    location = service.create_location(
+        LocationCreate(
+            client_id=client.id,
+            name="Matriz",
+            state="Jalisco",
+            municipality="Guadalajara",
+            neighborhood="Centro",
+            street="Av. Hidalgo 10",
+            lot="5",
+            block="2",
+            reference="Frente al parque",
+        )
+    )
+
+    fetched = service.get_location_or_raise(location.id)
+    assert fetched.state == "Jalisco"
+    assert fetched.municipality == "Guadalajara"
+    assert fetched.neighborhood == "Centro"
+    assert fetched.street == "Av. Hidalgo 10"
+    assert fetched.lot == "5"
+    assert fetched.block == "2"
+    assert fetched.full_address == (
+        "Av. Hidalgo 10, Centro, Guadalajara, Jalisco"
+    )

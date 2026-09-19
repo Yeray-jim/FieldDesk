@@ -21,19 +21,27 @@ dirección son opcionales, ya que hay clientes que no disponen de ellos.
 
 ## Registrar una ubicación
 
-1. Abre un cliente y entra en **Ubicaciones**.
-2. Pulsa **Nueva ubicación** y completa la información.
+1. Entra en **Ubicaciones** (o pulsa **Nueva ubicación**).
+2. Selecciona el cliente y completa, además del nombre: **estado**,
+   **municipio**, **colonia o fraccionamiento**, **calle y número**, **lote**,
+   **manzana** y **referencias**.
+
+También puedes crear una ubicación sin salir del alta de un equipo: en el
+desplegable **Ubicación** elige **«+ Crear nueva ubicación…»**.
 
 ## Registrar un equipo
 
 1. Abre una ubicación y entra en **Equipos**.
 2. Pulsa **Nuevo equipo** e indica nombre, tipo, marca, modelo y estado.
+3. La **fecha de instalación** y el **fin de garantía** se eligen tocando el
+   campo y seleccionando el día en el calendario.
 
 ## Crear un servicio
 
 1. Entra en **Servicios** y pulsa **Nuevo servicio**.
-2. Selecciona cliente y equipo, describe el trabajo, la prioridad y la fecha.
-3. Guarda el servicio.
+2. Selecciona cliente y equipo, describe el trabajo y la prioridad.
+3. Elige la **fecha y la hora programadas** con el calendario y el reloj.
+4. Guarda el servicio.
 
 ## Registrar una visita
 
@@ -79,6 +87,11 @@ cronológico, sus servicios, visitas, incidencias, materiales y evidencias.
 
 Desde **Configuración** puedes exportar clientes, equipos, servicios,
 incidencias y materiales a CSV, compatible con Excel y LibreOffice.
+
+## Apariencia
+
+En **Ajustes → Apariencia** puedes elegir el tema **Sistema**, **Claro** u
+**Oscuro**. El cambio se aplica al instante.
 
 ## Datos de demostración
 

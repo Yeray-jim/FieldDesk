@@ -123,7 +123,9 @@ class FakePage:
         self.height = 800
         self.title = None
         self.theme = None
+        self.dark_theme = None
         self.theme_mode = None
+        self.platform_brightness = ft.Brightness.LIGHT
         self.bgcolor = None
         self.padding = None
         self.spacing = None

@@ -4,13 +4,11 @@ from __future__ import annotations
 
 import flet as ft
 
-from app.components.forms import FormField, GlassDropdown, GlassTextField
+from app.components.forms import GlassDropdown
 from app.components.tables import text_cell
-from app.schemas import LocationCreate, LocationUpdate
+from app.schemas import LocationUpdate
 from app.views.crud_view import CrudView
-
-FULL = 12
-HALF = {"sm": 12, "md": 6}
+from app.views.location_fields import build_location_fields
 
 
 class LocationsView(CrudView):
@@ -20,16 +18,19 @@ class LocationsView(CrudView):
     singular = "ubicación"
     icon = ft.Icons.LOCATION_ON_OUTLINED
     add_label = "Nueva ubicación"
-    search_hint = "Buscar por nombre o dirección"
+    search_hint = "Buscar por nombre, municipio, calle o referencia"
     empty_title = "Sin ubicaciones"
     empty_message = "Registra la primera ubicación de un cliente."
 
     def prepare(self) -> None:
         self._client_filter = ""
+        self._clients = self.services.clients.list_clients()
         self._client_names = {
-            client.id: client.name
-            for client in self.services.clients.list_clients()
+            client.id: client.name for client in self._clients
         }
+        self._client_options = [
+            (str(client.id), client.name) for client in self._clients
+        ]
 
     def load_records(self) -> list:
         if self._client_filter:
@@ -40,11 +41,23 @@ class LocationsView(CrudView):
 
     def searchable_text(self, record) -> str:
         return " ".join(
-            filter(None, [record.name, record.address, record.reference])
+            filter(
+                None,
+                [
+                    record.name,
+                    record.state,
+                    record.municipality,
+                    record.neighborhood,
+                    record.street,
+                    record.lot,
+                    record.block,
+                    record.reference,
+                ],
+            )
         )
 
     def columns(self) -> list[str]:
-        return ["Nombre", "Cliente", "Dirección", "Referencia"]
+        return ["Nombre", "Cliente", "Municipio", "Calle", "Referencia"]
 
     def render_row(self, record) -> list[ft.Control]:
         return [
@@ -52,20 +65,15 @@ class LocationsView(CrudView):
             text_cell(
                 self._client_names.get(record.client_id, "—"), muted=True
             ),
-            text_cell(record.address or "—", muted=True),
+            text_cell(record.municipality or "—", muted=True),
+            text_cell(record.street or "—", muted=True),
             text_cell(record.reference or "—", muted=True),
         ]
 
     def filter_controls(self) -> list[ft.Control]:
         dropdown = GlassDropdown(
             "Cliente",
-            [
-                ("", "Todos los clientes"),
-                *[
-                    (str(client_id), name)
-                    for client_id, name in self._client_names.items()
-                ],
-            ],
+            [("", "Todos los clientes"), *self._client_options],
             value=self._client_filter,
             on_select=self._on_client_filter,
         )
@@ -76,64 +84,12 @@ class LocationsView(CrudView):
         self._client_filter = event.control.value or ""
         self._reload()
 
-    def build_fields(self, record) -> list[FormField]:
-        client_options = [
-            (str(client_id), name)
-            for client_id, name in self._client_names.items()
-        ]
-        current_client = (
-            str(record.client_id) if record else None
-        )
-        return [
-            FormField(
-                "client_id",
-                GlassDropdown(
-                    "Cliente",
-                    client_options,
-                    required=True,
-                    value=current_client,
-                    col=FULL,
-                ),
-                required=True,
-            ),
-            FormField(
-                "name",
-                GlassTextField(
-                    "Nombre",
-                    required=True,
-                    value=record.name if record else None,
-                    col=FULL,
-                ),
-                required=True,
-            ),
-            FormField(
-                "address",
-                GlassTextField(
-                    "Dirección",
-                    value=record.address if record else None,
-                    col=FULL,
-                ),
-            ),
-            FormField(
-                "reference",
-                GlassTextField(
-                    "Referencia",
-                    value=record.reference if record else None,
-                    col=HALF,
-                ),
-            ),
-            FormField(
-                "notes",
-                GlassTextField(
-                    "Notas",
-                    value=record.notes if record else None,
-                    multiline=True,
-                    col=HALF,
-                ),
-            ),
-        ]
+    def build_fields(self, record) -> list:
+        return build_location_fields(record, self._client_options)
 
     def create_record(self, values: dict) -> None:
+        from app.schemas import LocationCreate
+
         self.services.locations.create_location(LocationCreate(**values))
 
     def update_record(self, record, values: dict) -> None:

@@ -197,7 +197,10 @@ class SettingsView(BaseView):
     def _on_theme_change(self, event: ft.ControlEvent) -> None:
         key = event.control.value or "system"
         self.page.theme_mode = _THEME_MODES.get(key, ft.ThemeMode.SYSTEM)
-        self.page.update()
+        if self.context.reload is not None:
+            self.context.reload()
+        else:
+            self.page.update()
         notify(self.page, "Tema actualizado.")
 
     def _handle_backup(self, _event: ft.ControlEvent) -> None:

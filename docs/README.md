@@ -21,8 +21,8 @@ sincronizada con el código real en cada fase del desarrollo.
 
 ## Estado del proyecto
 
-Versión **0.1.0** — Proyecto completo (11/11 fases). Todas las funcionalidades
+Versión **0.2.0** — Proyecto completo (11/11 fases). Todas las funcionalidades
 están implementadas y probadas: gestión completa, evidencias fotográficas,
-reportes PDF, historial por equipo, exportación CSV, backup/restauración y
-datos de demostración opcionales. La suite tiene 147 pruebas con una cobertura
-del 87 % sobre `app/`.
+reportes PDF, historial por equipo, exportación CSV, backup/restauración,
+datos de demostración, selección de fechas con calendario, direcciones
+estructuradas y modo claro/oscuro. La suite tiene 156 pruebas.

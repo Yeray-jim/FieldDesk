@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
 
 import flet as ft
@@ -19,3 +20,4 @@ class AppContext:
     services: Services
     file_picker: ft.FilePicker | None = None
     url_launcher: ft.UrlLauncher | None = None
+    reload: Callable[[], None] | None = None

@@ -47,14 +47,14 @@ _CLIENTS = [
 ]
 
 _LOCATIONS = [
-    (0, "Urgencias", "Planta baja, ala este", "Junto a recepción"),
-    (0, "Quirófano 2", "Planta segunda", "Acceso restringido"),
-    (1, "Planta de producción", "Nave principal", "Puerta de carga 3"),
-    (1, "Almacén central", "Nave anexa", "Llave en conserjería"),
-    (2, "Recepción", "Planta baja", ""),
-    (3, "Sucursal Centro", "Calle Mayor 5", ""),
-    (3, "Sucursal Norte", "Av. Norte 210", "Frigorífico principal"),
-    (4, "Azotea", "Cubierta", "Acceso por escalera técnica"),
+    (0, "Urgencias", "Ciudad de México", "Cuauhtémoc", "Centro", "Av. de la Salud 45", "12", "4", "Junto a recepción"),
+    (0, "Quirófano 2", "Ciudad de México", "Cuauhtémoc", "Centro", "Av. de la Salud 45", "12", "4", "Planta segunda, acceso restringido"),
+    (1, "Planta de producción", "Nuevo León", "Apodaca", "Parque Industrial", "Carr. Miguel Alemán 300", "7", "2", "Puerta de carga 3"),
+    (1, "Almacén central", "Nuevo León", "Apodaca", "Parque Industrial", "Carr. Miguel Alemán 320", "8", "2", "Nave anexa, llave en conserjería"),
+    (2, "Recepción", "Jalisco", "Guadalajara", "Americana", "Calle Mayor 12", "5", "1", ""),
+    (3, "Sucursal Centro", "Jalisco", "Zapopan", "Centro", "Av. Hidalgo 210", "3", "1", "Frente a la plaza"),
+    (3, "Sucursal Norte", "Jalisco", "Zapopan", "Industrial", "Av. Norte 210", "18", "6", "Frigorífico principal"),
+    (4, "Azotea", "Quintana Roo", "Benito Juárez", "Zona Hotelera", "Paseo Marítimo 3", "1", "1", "Acceso por escalera técnica"),
 ]
 
 _EQUIPMENT = [
@@ -197,11 +197,26 @@ class DemoDataService(BaseService):
                 Location(
                     client_id=clients[client_index].id,
                     name=name,
-                    address=address,
+                    state=state,
+                    municipality=municipality,
+                    neighborhood=neighborhood,
+                    street=street,
+                    lot=lot,
+                    block=block,
                     reference=reference or None,
                 )
             )
-            for client_index, name, address, reference in _LOCATIONS
+            for (
+                client_index,
+                name,
+                state,
+                municipality,
+                neighborhood,
+                street,
+                lot,
+                block,
+                reference,
+            ) in _LOCATIONS
         ]
 
     @staticmethod

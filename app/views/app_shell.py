@@ -20,6 +20,7 @@ from app.components.theme import (
     Palette,
     apply_theme,
     background_gradient,
+    chrome_color,
 )
 from app.utils.constants import MOBILE_BREAKPOINT
 from app.views.base_view import BaseView
@@ -122,6 +123,7 @@ class AppShell:
     def render(self) -> None:
         """Apply the theme and mount the shell on the page."""
         apply_theme(self._page)
+        self._context.reload = self._remount
         root = self.build_root()
         self._page.on_resize = self._on_resize
         self._page.add(root)
@@ -213,7 +215,7 @@ class AppShell:
                 horizontal=Metrics.SPACING,
                 vertical=Metrics.SPACING_SMALL,
             ),
-            bgcolor=ft.Colors.with_opacity(0.6, ft.Colors.WHITE),
+            bgcolor=chrome_color(),
         )
 
     def _brand(self) -> ft.Control:
@@ -254,10 +256,12 @@ class AppShell:
 
     def _remount(self) -> None:
         """Rebuild the body with a fresh content area for the current view."""
+        apply_theme(self._page)
         self._content = ft.Container(
             content=self._build_view(self._selected),
             expand=True,
         )
         if self._root is not None:
+            self._root.gradient = background_gradient()
             self._root.content = self._build_body()
         self._page.update()

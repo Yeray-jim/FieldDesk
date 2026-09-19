@@ -68,6 +68,7 @@ def main(page: ft.Page) -> None:
     page.window.width = 940
     page.window.height = 1000
     page.enable_screenshots = True
+    page.theme_mode = ft.ThemeMode.LIGHT
 
     settings = _demo_settings()
     run_migrations(settings)
@@ -99,6 +100,13 @@ def main(page: ft.Page) -> None:
             )
             await asyncio.sleep(1.0)
             await _capture(screenshot, name)
+
+        page.theme_mode = ft.ThemeMode.DARK
+        shell._on_nav_change(  # noqa: SLF001
+            SimpleNamespace(control=SimpleNamespace(selected_index=0))
+        )
+        await asyncio.sleep(1.2)
+        await _capture(screenshot, "06_panel_oscuro")
         print("screenshots done")
 
     page.run_task(sequence)

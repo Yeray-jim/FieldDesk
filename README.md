@@ -5,7 +5,7 @@ administren clientes, ubicaciones, equipos, servicios, visitas, incidencias,
 materiales, evidencias fotográficas y reportes PDF. Todos los datos se
 almacenan localmente en **SQLite**; no requiere conexión a Internet.
 
-> Versión actual: **0.1.0** · Estado: **completo** (11/11 fases).
+> Versión actual: **0.2.0** · Estado: **completo** (11/11 fases).
 
 ## Características
 
@@ -17,6 +17,10 @@ almacenan localmente en **SQLite**; no requiere conexión a Internet.
 - Backup y restauración de la información en formato ZIP.
 - Exportación de datos a CSV compatible con Excel y LibreOffice.
 - Datos de demostración opcionales para la presentación del proyecto.
+- Selección de fechas y horas con calendario y reloj, sin escribirlas.
+- Ubicaciones con dirección estructurada (estado, municipio, colonia,
+  calle, lote, manzana y referencias).
+- Modo claro y oscuro conmutable desde Ajustes.
 - Interfaz con estilo *glassmorphism* moderado y diseño responsivo
   (desktop y móvil).
 
@@ -36,6 +40,9 @@ almacenan localmente en **SQLite**; no requiere conexión a Internet.
 
 ### Ajustes (backup, exportación y datos de demostración)
 ![Ajustes](docs/images/05_ajustes.png)
+
+### Modo oscuro
+![Panel de control en modo oscuro](docs/images/06_panel_oscuro.png)
 
 ## Tecnologías
 

@@ -4,12 +4,20 @@ from __future__ import annotations
 
 import flet as ft
 
-from app.components.forms import FormField, GlassDropdown, GlassTextField
+from app.components.forms import (
+    FormField,
+    GlassDateField,
+    GlassDropdown,
+    GlassTextField,
+)
 from app.components.tables import badge_cell, text_cell
 from app.database.models import EquipmentStatus
 from app.schemas import EquipmentCreate, EquipmentUpdate
 from app.views.crud_view import CrudView
 from app.views.equipment_history_dialog import EquipmentHistoryDialog
+from app.views.location_fields import open_location_form
+
+_NEW_LOCATION = "__new__"
 
 FULL = 12
 HALF = {"sm": 12, "md": 6}
@@ -35,10 +43,15 @@ class EquipmentView(CrudView):
 
     def prepare(self) -> None:
         self._status_filter = ""
+        self._selected_location_id = ""
         self._locations = self.services.locations.list_locations()
         self._location_names = {
             location.id: location.name for location in self._locations
         }
+        self._clients = self.services.clients.list_clients()
+        self._client_options = [
+            (str(client.id), client.name) for client in self._clients
+        ]
 
     def load_records(self) -> list:
         if self._status_filter:
@@ -89,6 +102,35 @@ class EquipmentView(CrudView):
         self._status_filter = event.control.value or ""
         self._reload()
 
+    def _on_location_select(self, event: ft.ControlEvent) -> None:
+        value = event.control.value or ""
+        if value == _NEW_LOCATION:
+            event.control.value = self._selected_location_id
+            open_location_form(
+                self.page,
+                self.services,
+                self._client_options,
+                self._on_location_created,
+            )
+            self.page.update()
+        else:
+            self._selected_location_id = value
+
+    def _on_location_created(self, location) -> None:
+        self._locations = self.services.locations.list_locations()
+        self._location_names = {
+            item.id: item.name for item in self._locations
+        }
+        self._selected_location_id = str(location.id)
+        dropdown = self._location_dropdown
+        dropdown.options = [
+            ft.DropdownOption(key=key, text=text)
+            for key, text in self._location_options()
+        ]
+        dropdown.value = str(location.id)
+        dropdown.clear_error()
+        self.page.update()
+
     def extra_row_menu_items(self, record) -> list[ft.PopupMenuItem]:
         return [
             ft.PopupMenuItem(
@@ -101,20 +143,28 @@ class EquipmentView(CrudView):
     def _open_history(self, record) -> None:
         EquipmentHistoryDialog(self.page, self.services, record).show()
 
+    def _location_options(self) -> list[tuple[str, str]]:
+        return [
+            (str(location.id), location.name)
+            for location in self._locations
+        ] + [(_NEW_LOCATION, "+ Crear nueva ubicación…")]
+
     def build_fields(self, record) -> list[FormField]:
-        location_options = [
-            (str(location.id), location.name) for location in self._locations
-        ]
+        self._selected_location_id = (
+            str(record.location_id) if record else ""
+        )
+        self._location_dropdown = GlassDropdown(
+            "Ubicación",
+            self._location_options(),
+            required=True,
+            value=str(record.location_id) if record else None,
+            on_select=self._on_location_select,
+            col=FULL,
+        )
         return [
             FormField(
                 "location_id",
-                GlassDropdown(
-                    "Ubicación",
-                    location_options,
-                    required=True,
-                    value=str(record.location_id) if record else None,
-                    col=FULL,
-                ),
+                self._location_dropdown,
                 required=True,
             ),
             FormField(
@@ -174,9 +224,9 @@ class EquipmentView(CrudView):
             ),
             FormField(
                 "installation_date",
-                GlassTextField(
+                GlassDateField(
+                    self.page,
                     "Fecha de instalación",
-                    hint="AAAA-MM-DD",
                     value=(
                         record.installation_date.isoformat()
                         if record and record.installation_date
@@ -187,9 +237,9 @@ class EquipmentView(CrudView):
             ),
             FormField(
                 "warranty_expiration",
-                GlassTextField(
+                GlassDateField(
+                    self.page,
                     "Fin de garantía",
-                    hint="AAAA-MM-DD",
                     value=(
                         record.warranty_expiration.isoformat()
                         if record and record.warranty_expiration

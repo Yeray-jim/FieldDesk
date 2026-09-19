@@ -8,7 +8,13 @@ from pathlib import Path
 import flet as ft
 
 from app.components.dialogs import notify
-from app.components.forms import FormField, GlassDropdown, GlassTextField
+from app.components.forms import (
+    FormField,
+    GlassDateField,
+    GlassDropdown,
+    GlassTextField,
+    GlassTimeField,
+)
 from app.components.tables import badge_cell, text_cell
 from app.database.models import Priority, ServiceStatus
 from app.schemas import ServiceCreate, ServiceUpdate
@@ -160,8 +166,13 @@ class ServicesView(CrudView):
             )
             for equipment in self._equipment
         ]
-        scheduled = (
-            record.scheduled_date.strftime("%Y-%m-%d %H:%M")
+        scheduled_date = (
+            record.scheduled_date.strftime("%Y-%m-%d")
+            if record and record.scheduled_date
+            else None
+        )
+        scheduled_time = (
+            record.scheduled_date.strftime("%H:%M")
             if record and record.scheduled_date
             else None
         )
@@ -209,10 +220,19 @@ class ServicesView(CrudView):
             ),
             FormField(
                 "scheduled_date",
-                GlassTextField(
+                GlassDateField(
+                    self.page,
                     "Fecha programada",
-                    hint="AAAA-MM-DD HH:MM",
-                    value=scheduled,
+                    value=scheduled_date,
+                    col=HALF,
+                ),
+            ),
+            FormField(
+                "scheduled_time",
+                GlassTimeField(
+                    self.page,
+                    "Hora programada",
+                    value=scheduled_time,
                     col=HALF,
                 ),
             ),
@@ -248,12 +268,26 @@ class ServicesView(CrudView):
             ),
         ]
 
+    @staticmethod
+    def _combine_schedule(values: dict) -> dict:
+        """Merge the date and time fields into the ``scheduled_date``."""
+        data = dict(values)
+        moment = data.pop("scheduled_time", None)
+        date_value = data.get("scheduled_date")
+        if date_value and moment:
+            data["scheduled_date"] = f"{date_value} {moment}"
+        elif date_value:
+            data["scheduled_date"] = f"{date_value} 00:00"
+        return data
+
     def create_record(self, values: dict) -> None:
-        self.services.services.create_service(ServiceCreate(**values))
+        self.services.services.create_service(
+            ServiceCreate(**self._combine_schedule(values))
+        )
 
     def update_record(self, record, values: dict) -> None:
         self.services.services.update_service(
-            record.id, ServiceUpdate(**values)
+            record.id, ServiceUpdate(**self._combine_schedule(values))
         )
 
     def delete_record(self, record) -> None:

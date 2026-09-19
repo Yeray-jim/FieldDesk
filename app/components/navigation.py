@@ -12,7 +12,7 @@ from dataclasses import dataclass
 
 import flet as ft
 
-from app.components.theme import Metrics, Palette
+from app.components.theme import Metrics, Palette, chrome_color
 
 
 @dataclass(frozen=True)
@@ -50,7 +50,7 @@ class AppNavigationRail(ft.NavigationRail):
                 for item in items
             ],
             label_type=ft.NavigationRailLabelType.ALL,
-            bgcolor=ft.Colors.with_opacity(0.5, ft.Colors.WHITE),
+            bgcolor=chrome_color(),
             indicator_color=ft.Colors.with_opacity(0.14, Palette.PRIMARY),
             min_width=96,
             leading=leading,
@@ -81,7 +81,7 @@ class AppNavigationBar(ft.NavigationBar):
                 )
                 for item in items
             ],
-            bgcolor=ft.Colors.with_opacity(0.85, ft.Colors.WHITE),
+            bgcolor=chrome_color(),
             indicator_color=ft.Colors.with_opacity(0.14, Palette.PRIMARY),
             label_behavior=ft.NavigationBarLabelBehavior.ONLY_SHOW_SELECTED,
         )

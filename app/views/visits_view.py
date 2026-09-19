@@ -4,7 +4,13 @@ from __future__ import annotations
 
 import flet as ft
 
-from app.components.forms import FormField, GlassDropdown, GlassTextField
+from app.components.forms import (
+    FormField,
+    GlassDateField,
+    GlassDropdown,
+    GlassTextField,
+    GlassTimeField,
+)
 from app.components.tables import text_cell
 from app.schemas import VisitCreate, VisitUpdate
 from app.utils.dates import format_date, format_time
@@ -102,10 +108,10 @@ class VisitsView(CrudView):
             ),
             FormField(
                 "visit_date",
-                GlassTextField(
+                GlassDateField(
+                    self.page,
                     "Fecha de la visita",
                     required=True,
-                    hint="AAAA-MM-DD",
                     value=record.visit_date.isoformat() if record else None,
                     col=HALF,
                 ),
@@ -113,9 +119,9 @@ class VisitsView(CrudView):
             ),
             FormField(
                 "start_time",
-                GlassTextField(
+                GlassTimeField(
+                    self.page,
                     "Hora de inicio",
-                    hint="HH:MM",
                     value=(
                         record.start_time.strftime("%H:%M")
                         if record and record.start_time
@@ -126,9 +132,9 @@ class VisitsView(CrudView):
             ),
             FormField(
                 "end_time",
-                GlassTextField(
+                GlassTimeField(
+                    self.page,
                     "Hora de fin",
-                    hint="HH:MM",
                     value=(
                         record.end_time.strftime("%H:%M")
                         if record and record.end_time

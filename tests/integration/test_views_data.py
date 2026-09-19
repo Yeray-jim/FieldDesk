@@ -81,6 +81,37 @@ def test_views_build_with_seeded_data(
 
 
 @pytest.mark.integration
+def test_equipment_location_options_include_new_location(
+    database: Database,
+    settings: Settings,
+    workflow: Workflow,
+) -> None:
+    services = Services(database, settings)
+    view = EquipmentView(
+        AppContext(page=FakePage(), settings=settings, services=services)
+    )
+    view.prepare()
+
+    keys = [key for key, _label in view._location_options()]  # noqa: SLF001
+
+    assert "__new__" in keys
+    assert str(workflow.location_id) in keys
+
+
+@pytest.mark.integration
+def test_services_view_combines_date_and_time() -> None:
+    assert ServicesView._combine_schedule(  # noqa: SLF001
+        {"scheduled_date": "2026-01-15", "scheduled_time": "09:30"}
+    ) == {"scheduled_date": "2026-01-15 09:30"}
+    assert ServicesView._combine_schedule(  # noqa: SLF001
+        {"scheduled_date": "2026-01-15"}
+    ) == {"scheduled_date": "2026-01-15 00:00"}
+    assert ServicesView._combine_schedule(  # noqa: SLF001
+        {"scheduled_date": None, "scheduled_time": None}
+    ) == {"scheduled_date": None}
+
+
+@pytest.mark.integration
 def test_form_dialog_creates_a_client(
     database: Database,
     settings: Settings,

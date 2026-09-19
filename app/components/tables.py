@@ -13,6 +13,8 @@ from app.components.theme import (
     glass_border,
     glass_surface_color,
     soft_shadow,
+    table_heading_color,
+    table_row_color,
 )
 
 
@@ -48,15 +50,11 @@ class GlassTable(ft.Container):
                 rows=[
                     ft.DataRow(
                         cells=[ft.DataCell(cell) for cell in row],
-                        color={
-                            ft.ControlState.DEFAULT: ft.Colors.with_opacity(
-                                0.35, ft.Colors.WHITE
-                            )
-                        },
+                        color={ft.ControlState.DEFAULT: table_row_color()},
                     )
                     for row in rows
                 ],
-                heading_row_color=ft.Colors.with_opacity(0.06, "#0F172A"),
+                heading_row_color=table_heading_color(),
                 border_radius=Metrics.RADIUS,
                 column_spacing=14,
                 horizontal_margin=8,
