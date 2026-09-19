@@ -18,6 +18,7 @@ from app.components.forms import (
 from app.components.tables import badge_cell, text_cell
 from app.database.models import Priority, ServiceStatus
 from app.schemas import ServiceCreate, ServiceUpdate
+from app.utils.dates import to_12h, to_24h
 from app.utils.exceptions import FieldDeskError
 from app.views.crud_view import CrudView
 from app.views.service_evidence_dialog import ServiceEvidenceDialog
@@ -171,10 +172,8 @@ class ServicesView(CrudView):
             if record and record.scheduled_date
             else None
         )
-        scheduled_time = (
-            record.scheduled_date.strftime("%H:%M")
-            if record and record.scheduled_date
-            else None
+        scheduled_time = to_12h(
+            record.scheduled_date if record else None
         )
         return [
             FormField(
@@ -272,7 +271,7 @@ class ServicesView(CrudView):
     def _combine_schedule(values: dict) -> dict:
         """Merge the date and time fields into the ``scheduled_date``."""
         data = dict(values)
-        moment = data.pop("scheduled_time", None)
+        moment = to_24h(data.pop("scheduled_time", None))
         date_value = data.get("scheduled_date")
         if date_value and moment:
             data["scheduled_date"] = f"{date_value} {moment}"

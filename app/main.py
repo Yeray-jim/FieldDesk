@@ -70,10 +70,14 @@ def run() -> None:
         settings.app_version,
         settings.environment,
     )
+    assets_dir = settings.project_root / "assets"
+    run_options = (
+        {"assets_dir": str(assets_dir)} if assets_dir.is_dir() else {}
+    )
     try:
         ft.run(
             lambda page: build_app(page, database),
-            assets_dir=str(settings.project_root / "assets"),
+            **run_options,
         )
     finally:
         database.dispose()

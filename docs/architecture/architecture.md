@@ -175,6 +175,11 @@ La capa de interfaz vive en `app/views` (pantallas) y `app/components`
   sus etiquetas con `app.utils.i18n.t`. El idioma se elige en Ajustes
   (español/inglés, por defecto español) y se guarda en
   `storage/preferences.json`.
+- **Empaquetado**: `main.py` en la raíz es el punto de entrada para
+  `flet build`. En móvil el almacenamiento se toma de
+  `FLET_APP_STORAGE_DATA` (directorio escribible), y si no se encuentra
+  `alembic.ini` el esquema se crea directamente desde los modelos. ReportLab
+  y Pillow son opcionales: si faltan, la app avisa en lugar de fallar.
 
 Las pantallas de clientes, ubicaciones, equipos, servicios, visitas,
 incidencias y materiales están conectadas de extremo a extremo

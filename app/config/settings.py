@@ -13,7 +13,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 APP_NAME = "FieldDesk"
-APP_VERSION = "0.3.0"
+APP_VERSION = "0.4.0"
 
 _PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
@@ -71,8 +71,13 @@ class Settings:
             .expanduser()
             .resolve()
         )
+        # On mobile/packaged builds the project folder is read-only; Flet
+        # exposes a writable per-app directory through this variable.
+        default_storage = os.getenv("FLET_APP_STORAGE_DATA") or (
+            project_root / "storage"
+        )
         storage_dir = (
-            Path(os.getenv("FIELDDESK_STORAGE_DIR", project_root / "storage"))
+            Path(os.getenv("FIELDDESK_STORAGE_DIR", default_storage))
             .expanduser()
             .resolve()
         )

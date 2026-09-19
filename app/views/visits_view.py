@@ -13,7 +13,7 @@ from app.components.forms import (
 )
 from app.components.tables import text_cell
 from app.schemas import VisitCreate, VisitUpdate
-from app.utils.dates import format_date, format_time
+from app.utils.dates import format_date, format_time, to_12h, to_24h
 from app.views.crud_view import CrudView
 
 FULL = 12
@@ -122,11 +122,7 @@ class VisitsView(CrudView):
                 GlassTimeField(
                     self.page,
                     "Hora de inicio",
-                    value=(
-                        record.start_time.strftime("%H:%M")
-                        if record and record.start_time
-                        else None
-                    ),
+                    value=to_12h(record.start_time if record else None),
                     col=HALF,
                 ),
             ),
@@ -135,11 +131,7 @@ class VisitsView(CrudView):
                 GlassTimeField(
                     self.page,
                     "Hora de fin",
-                    value=(
-                        record.end_time.strftime("%H:%M")
-                        if record and record.end_time
-                        else None
-                    ),
+                    value=to_12h(record.end_time if record else None),
                     col=HALF,
                 ),
             ),
@@ -163,11 +155,23 @@ class VisitsView(CrudView):
             ),
         ]
 
+    @staticmethod
+    def _normalize_times(values: dict) -> dict:
+        data = dict(values)
+        for key in ("start_time", "end_time"):
+            if key in data:
+                data[key] = to_24h(data[key])
+        return data
+
     def create_record(self, values: dict) -> None:
-        self.services.visits.create_visit(VisitCreate(**values))
+        self.services.visits.create_visit(
+            VisitCreate(**self._normalize_times(values))
+        )
 
     def update_record(self, record, values: dict) -> None:
-        self.services.visits.update_visit(record.id, VisitUpdate(**values))
+        self.services.visits.update_visit(
+            record.id, VisitUpdate(**self._normalize_times(values))
+        )
 
     def delete_record(self, record) -> None:
         self.services.visits.delete_visit(record.id)

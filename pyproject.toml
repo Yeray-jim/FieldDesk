@@ -1,0 +1,24 @@
+[project]
+name = "FieldDesk"
+version = "0.4.0"
+description = "Offline field service management for technicians"
+readme = "README.md"
+requires-python = ">=3.13"
+license = { text = "MIT" }
+# Dependencies bundled into the mobile build. ReportLab and Pillow are
+# desktop-only (no Android wheels); the app degrades gracefully without them.
+dependencies = [
+    "flet==1.0.0",
+    "SQLAlchemy==2.0.54",
+    "alembic==1.20.0",
+    "pydantic==2.13.4",
+]
+
+[tool.flet]
+org = "com.fielddesk"
+product = "FieldDesk"
+company = "FieldDesk"
+copyright = "Copyright (c) 2026 The FieldDesk Authors"
+
+[tool.flet.app]
+module = "app.main"

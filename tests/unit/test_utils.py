@@ -47,6 +47,19 @@ def test_date_formatting() -> None:
 
 
 @pytest.mark.unit
+def test_twelve_hour_conversions() -> None:
+    assert dates.to_12h(time(9, 30)) == "09:30 AM"
+    assert dates.to_12h(time(15, 5)) == "03:05 PM"
+    assert dates.to_12h(None) is None
+
+    assert dates.to_24h("09:30 AM") == "09:30"
+    assert dates.to_24h("3:05 PM") == "15:05"
+    assert dates.to_24h("12:00 AM") == "00:00"
+    assert dates.to_24h("12:00 PM") == "12:00"
+    assert dates.to_24h("21:45") == "21:45"
+
+
+@pytest.mark.unit
 def test_combine_date_and_time() -> None:
     assert dates.combine(date(2026, 1, 2), None) is None
     assert dates.combine(date(2026, 1, 2), time(8, 0)) == datetime(

@@ -241,12 +241,15 @@ class GlassTimeField(ft.TextField):
         col: int | dict | None = None,
     ) -> None:
         self._page = page
-        self._picker = ft.TimePicker(on_change=self._on_time_change)
+        self._picker = ft.TimePicker(
+            hour_format=ft.TimePickerHourFormat.H12,
+            on_change=self._on_time_change,
+        )
         extra: dict = {
             "label": f"{t(label)} *" if required else t(label),
             "value": value,
             "error": error,
-            "hint_text": "HH:MM",
+            "hint_text": "HH:MM AM/PM",
             "read_only": True,
             "suffix_icon": ft.Icons.SCHEDULE_OUTLINED,
             "border": ft.OutlineInputBorder(),
@@ -272,7 +275,7 @@ class GlassTimeField(ft.TextField):
         value = event.control.value
         if value is None:
             return
-        self.value = value.strftime("%H:%M")
+        self.value = value.strftime("%I:%M %p")
         self._page.update()
 
     def show_error(self, message: str) -> None:

@@ -12,7 +12,7 @@ def test_metadata_defaults() -> None:
     settings = Settings.from_env()
 
     assert settings.app_name == "FieldDesk"
-    assert settings.app_version == "0.3.0"
+    assert settings.app_version == "0.4.0"
 
 
 @pytest.mark.unit

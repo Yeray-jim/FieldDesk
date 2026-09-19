@@ -13,29 +13,39 @@ from datetime import datetime
 from pathlib import Path
 from xml.sax.saxutils import escape
 
-from reportlab.lib import colors
-from reportlab.lib.pagesizes import A4
-from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
-from reportlab.lib.units import mm
-from reportlab.platypus import (
-    Image as RLImage,
-    KeepTogether,
-    Paragraph,
-    SimpleDocTemplate,
-    Spacer,
-    Table,
-    TableStyle,
-)
+from app.utils.exceptions import StorageError
 
-PRIMARY = colors.HexColor("#4F46E5")
-TEXT = colors.HexColor("#0F172A")
-MUTED = colors.HexColor("#64748B")
-LIGHT = colors.HexColor("#EEF2FF")
-BORDER = colors.HexColor("#CBD5E1")
+try:
+    from reportlab.lib import colors
+    from reportlab.lib.pagesizes import A4
+    from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
+    from reportlab.lib.units import mm
+    from reportlab.platypus import (
+        Image as RLImage,
+        KeepTogether,
+        Paragraph,
+        SimpleDocTemplate,
+        Spacer,
+        Table,
+        TableStyle,
+    )
 
-_MARGIN_X = 18 * mm
-_MARGIN_TOP = 16 * mm
-_MARGIN_BOTTOM = 18 * mm
+    REPORTLAB_AVAILABLE = True
+except ImportError:  # pragma: no cover - ReportLab is desktop-only
+    REPORTLAB_AVAILABLE = False
+
+if REPORTLAB_AVAILABLE:
+    PRIMARY = colors.HexColor("#4F46E5")
+    TEXT = colors.HexColor("#0F172A")
+    MUTED = colors.HexColor("#64748B")
+    LIGHT = colors.HexColor("#EEF2FF")
+    BORDER = colors.HexColor("#CBD5E1")
+    _MARGIN_X = 18 * mm
+    _MARGIN_TOP = 16 * mm
+    _MARGIN_BOTTOM = 18 * mm
+else:
+    PRIMARY = TEXT = MUTED = LIGHT = BORDER = "#000000"
+    _MARGIN_X = _MARGIN_TOP = _MARGIN_BOTTOM = 0
 
 
 @dataclass
@@ -108,6 +118,10 @@ class ReportBuilder:
 
     def build(self, output_path: Path) -> Path:
         """Write the PDF to ``output_path`` and return it."""
+        if not REPORTLAB_AVAILABLE:
+            raise StorageError(
+                "La generación de PDF no está disponible en este dispositivo."
+            )
         output_path.parent.mkdir(parents=True, exist_ok=True)
         document = SimpleDocTemplate(
             str(output_path),

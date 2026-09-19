@@ -54,3 +54,33 @@ def format_time(value: time | None) -> str:
     if value is None:
         return "—"
     return value.strftime("%H:%M")
+
+
+def to_12h(value: str | time | None) -> str | None:
+    """Convert a 24-hour time to ``hh:MM AM/PM`` for display."""
+    if value is None:
+        return None
+    if isinstance(value, time):
+        value = value.strftime("%H:%M")
+    try:
+        parsed = datetime.strptime(str(value), "%H:%M")
+    except ValueError:
+        return str(value)
+    return parsed.strftime("%I:%M %p")
+
+
+def to_24h(value: str | None) -> str | None:
+    """Convert a 12- or 24-hour time into the ``HH:MM`` 24-hour format.
+
+    Returns the original text when it cannot be parsed, so the schema reports
+    a clear validation error.
+    """
+    if not value:
+        return value
+    text = value.strip().upper().replace(".", "")
+    for pattern in ("%I:%M %p", "%I:%M%p", "%H:%M", "%H:%M:%S"):
+        try:
+            return datetime.strptime(text, pattern).strftime("%H:%M")
+        except ValueError:
+            continue
+    return value

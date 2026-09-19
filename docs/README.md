@@ -21,10 +21,10 @@ sincronizada con el código real en cada fase del desarrollo.
 
 ## Estado del proyecto
 
-Versión **0.3.0** — Proyecto completo (11/11 fases). Todas las funcionalidades
+Versión **0.4.0** — Proyecto completo (11/11 fases). Todas las funcionalidades
 están implementadas y probadas: gestión completa, evidencias fotográficas,
 reportes PDF, historial por equipo, exportación CSV, backup/restauración,
-datos de demostración, selección de fechas con calendario, direcciones
-estructuradas, inventario de materiales con descuento al finalizar el
-servicio, modo claro/oscuro e interfaz bilingüe (español/inglés). La suite
-tiene 165 pruebas.
+datos de demostración, selección de fechas con calendario y horas de 12 h con
+AM/PM, direcciones estructuradas, inventario de materiales con descuento al
+finalizar el servicio, modo claro/oscuro, interfaz bilingüe (español/inglés)
+y una versión Android (APK). La suite tiene 166 pruebas.

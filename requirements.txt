@@ -4,6 +4,6 @@
 flet==1.0.0            # Cross-platform declarative UI framework.
 SQLAlchemy==2.0.54     # ORM used to model and query the SQLite database.
 alembic==1.20.0        # Database schema migrations.
-pydantic==2.13.5       # Data validation for schemas entering the service layer.
+pydantic==2.13.4       # Data validation for schemas entering the service layer.
 reportlab==5.0.1       # PDF report generation.
 Pillow==12.3.0         # Image handling for evidence embedding in PDF reports.

@@ -48,4 +48,10 @@ def test_time_field_formats_selected_time() -> None:
         SimpleNamespace(control=SimpleNamespace(value=time(9, 30)))
     )
 
-    assert field.value == "09:30"
+    assert field.value == "09:30 AM"
+
+    field._on_time_change(  # noqa: SLF001
+        SimpleNamespace(control=SimpleNamespace(value=time(15, 5)))
+    )
+
+    assert field.value == "03:05 PM"

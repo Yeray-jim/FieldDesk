@@ -5,7 +5,7 @@ administren clientes, ubicaciones, equipos, servicios, visitas, incidencias,
 materiales, evidencias fotográficas y reportes PDF. Todos los datos se
 almacenan localmente en **SQLite**; no requiere conexión a Internet.
 
-> Versión actual: **0.3.0** · Estado: **completo** (11/11 fases).
+> Versión actual: **0.4.0** · Estado: **completo** (11/11 fases).
 
 ## Características
 
@@ -20,7 +20,8 @@ almacenan localmente en **SQLite**; no requiere conexión a Internet.
 - Inventario de materiales: existencias, consumo por servicio y descuento
   automático al finalizar el servicio.
 - Aplicación bilingüe (español e inglés) conmutable desde Ajustes.
-- Selección de fechas y horas con calendario y reloj, sin escribirlas.
+- Selección de fechas con calendario y horas en formato de 12 h con AM/PM.
+- Versión para Android (APK) lista para instalar y probar en el móvil.
 - Ubicaciones con dirección estructurada (estado, municipio, colonia,
   calle, lote, manzana y referencias).
 - Modo claro y oscuro conmutable desde Ajustes.
@@ -139,10 +140,32 @@ python -m app.main
 La aplicación creará automáticamente las carpetas de `storage/` necesarias y
 arrancará la interfaz Flet.
 
+## Aplicación móvil (APK)
+
+Puedes probar FieldDesk en un móvil Android **sin instalar Python**:
+
+1. Descarga [`FieldDesk-0.4.0-arm64-v8a.apk`](FieldDesk-0.4.0-arm64-v8a.apk)
+   (Android 8+, ARM de 64 bits).
+2. Ábrelo en el móvil y permite «instalar aplicaciones de orígenes
+   desconocidos» si el sistema lo solicita.
+
+Para generar el APK tú mismo:
+
+```bash
+flet build apk --project FieldDesk --artifact FieldDesk --org com.fielddesk \
+  --module-name main --build-version 0.4.0 --arch arm64-v8a
+```
+
+El primer build descarga e instala Flutter, el JDK y el SDK de Android. En
+Android, ReportLab y Pillow no tienen *wheels* nativos, por lo que la
+generación de PDF y las miniaturas muestran un aviso; el resto de la
+aplicación (gestión, materiales, evidencias, idioma y modo oscuro) funciona
+con normalidad.
+
 ## Testing
 
 ```bash
-pytest                                              # 165 pruebas
+pytest                                              # 166 pruebas
 pytest -m unit                                      # solo pruebas unitarias
 pytest -m integration                               # solo pruebas de integración
 pytest --cov=app --cov-report=term-missing          # cobertura (~87 %)

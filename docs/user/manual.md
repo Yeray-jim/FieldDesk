@@ -40,13 +40,15 @@ desplegable **Ubicación** elige **«+ Crear nueva ubicación…»**.
 
 1. Entra en **Servicios** y pulsa **Nuevo servicio**.
 2. Selecciona cliente y equipo, describe el trabajo y la prioridad.
-3. Elige la **fecha y la hora programadas** con el calendario y el reloj.
+3. Elige la **fecha programada** con el calendario y la **hora** con el reloj
+   (formato de 12 horas; elige AM o PM).
 4. Guarda el servicio.
 
 ## Registrar una visita
 
 1. Abre un servicio y pulsa **Añadir visita**.
-2. Indica la fecha, las horas y el trabajo realizado.
+2. Indica la fecha, las horas (formato de 12 h con AM/PM) y el trabajo
+   realizado.
 
 ## Gestionar incidencias
 
