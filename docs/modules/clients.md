@@ -13,6 +13,9 @@ presta servicio. Es el punto de partida del flujo funcional.
 - Buscar y filtrar por nombre, empresa, teléfono o email.
 - Verificar relaciones antes de eliminar para evitar pérdida de información.
 
+Solo el **nombre** es obligatorio. El email es opcional: si se deja vacío se
+almacena como `NULL` y, si se informa, se valida su formato.
+
 ## Clases principales
 
 | Clase | Capa | Responsabilidad |

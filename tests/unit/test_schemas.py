@@ -30,6 +30,13 @@ def test_client_rejects_invalid_email() -> None:
 
 
 @pytest.mark.unit
+def test_client_allows_missing_email() -> None:
+    for value in (None, "", "   "):
+        client = ClientCreate(name="Acme", email=value)
+        assert client.email is None
+
+
+@pytest.mark.unit
 def test_client_trims_and_requires_name() -> None:
     client = ClientCreate(name="  Acme  ")
     assert client.name == "Acme"

@@ -41,8 +41,10 @@ class AppNavigationRail(ft.NavigationRail):
             on_change=on_change,
             destinations=[
                 ft.NavigationRailDestination(
-                    icon=item.icon,
-                    selected_icon=item.selected_icon,
+                    icon=ft.Icon(item.icon, color=Palette.TEXT_MUTED),
+                    selected_icon=ft.Icon(
+                        item.selected_icon, color=Palette.PRIMARY
+                    ),
                     label=item.label,
                 )
                 for item in items
@@ -71,8 +73,10 @@ class AppNavigationBar(ft.NavigationBar):
             on_change=on_change,
             destinations=[
                 ft.NavigationBarDestination(
-                    icon=item.icon,
-                    selected_icon=item.selected_icon,
+                    icon=ft.Icon(item.icon, color=Palette.TEXT_MUTED),
+                    selected_icon=ft.Icon(
+                        item.selected_icon, color=Palette.PRIMARY
+                    ),
                     label=item.label,
                 )
                 for item in items

@@ -16,6 +16,9 @@ crean automáticamente. Puedes empezar a registrar información de inmediato.
 3. Completa los campos (los marcados con `*` son obligatorios).
 4. Pulsa **Guardar**.
 
+El único campo obligatorio es el **nombre**. El teléfono, el email y la
+dirección son opcionales, ya que hay clientes que no disponen de ellos.
+
 ## Registrar una ubicación
 
 1. Abre un cliente y entra en **Ubicaciones**.

@@ -89,6 +89,9 @@ class GlassTextField(ft.TextField):
             "filled": True,
             "fill_color": glass_surface_color(),
             "text_size": FontSize.BODY,
+            "color": Palette.TEXT,
+            "label_style": ft.TextStyle(color=Palette.TEXT),
+            "hint_style": ft.TextStyle(color=Palette.TEXT_MUTED),
             "read_only": read_only,
             "autofocus": autofocus,
             "content_padding": ft.Padding.symmetric(horizontal=14, vertical=14),
@@ -140,6 +143,9 @@ class GlassDropdown(ft.Dropdown):
             "filled": True,
             "fill_color": glass_surface_color(),
             "text_size": FontSize.BODY,
+            "color": Palette.TEXT,
+            "label_style": ft.TextStyle(color=Palette.TEXT),
+            "hint_style": ft.TextStyle(color=Palette.TEXT_MUTED),
             "content_padding": ft.Padding.symmetric(horizontal=14, vertical=14),
         }
         if on_select is not None:

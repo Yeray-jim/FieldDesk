@@ -21,7 +21,9 @@ class ClientCreate(SchemaBaseModel):
     @field_validator("email")
     @classmethod
     def validate_email(cls, value: str | None) -> str | None:
-        if value is not None and not is_valid_email(value):
+        if value is None or not value.strip():
+            return None
+        if not is_valid_email(value):
             raise ValueError("El correo electrónico no tiene un formato válido.")
         return value
 
@@ -39,6 +41,8 @@ class ClientUpdate(SchemaBaseModel):
     @field_validator("email")
     @classmethod
     def validate_email(cls, value: str | None) -> str | None:
-        if value is not None and not is_valid_email(value):
+        if value is None or not value.strip():
+            return None
+        if not is_valid_email(value):
             raise ValueError("El correo electrónico no tiene un formato válido.")
         return value
