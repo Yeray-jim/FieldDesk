@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from app.config.settings import Settings
 from app.database import Database
+from app.services.backup_service import BackupService
 from app.services.clients_service import ClientService
 from app.services.equipment_service import EquipmentService
 from app.services.evidence_service import EvidenceService
@@ -32,3 +33,4 @@ class Services:
         self.materials = MaterialService(database)
         self.evidence = EvidenceService(database, settings)
         self.reports = ReportService(database, settings)
+        self.backups = BackupService(database, settings)

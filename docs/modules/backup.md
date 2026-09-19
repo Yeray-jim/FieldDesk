@@ -1,6 +1,6 @@
 # Módulo: Backup y restauración
 
-> Estado: **pendiente** (Fase 9).
+> Estado: **completo** (Fase 9).
 
 ## Propósito
 
@@ -19,25 +19,33 @@ los datos locales.
 | Clase | Capa | Responsabilidad |
 | ----- | ---- | --------------- |
 | `BackupService` | `services` | Crear, validar y restaurar backups. |
-| `BackupManifest` | `schemas` | Metadatos del backup (versión, fecha). |
+| `BackupManifest` | `services` | Metadatos del backup (versión, fecha, recuentos). |
 | `SettingsView` | `views` | Interfaz de backup/restauración. |
 
 ## Formato
 
 ```text
-FieldDesk_Backup_2026-09-18.zip
-├── fielddesk.db
+FieldDesk_Backup_2026-09-18_110530.zip
+├── manifest.json
+├── database/fielddesk.db
 ├── images/
-├── documents/
-└── manifest.json
+└── documents/
 ```
+
+La base de datos se copia con la API `sqlite3.backup`, por lo que la copia es
+consistente aunque la aplicación esté en uso.
 
 ## Flujo de restauración
 
 ```text
-Validar ZIP → verificar estructura/manifest → backup de seguridad
-→ restaurar → validar base de datos → informar resultado
+Seleccionar ZIP → validar estructura/manifest → confirmar
+→ copia de seguridad automática de los datos actuales → restaurar
+→ validar integridad y tablas → informar resultado
 ```
+
+Si algo falla durante la restauración, se reaplica automáticamente la copia de
+seguridad previa. Las rutas internas del ZIP se validan para evitar
+extracciones fuera del destino (*zip slip*).
 
 ## Dependencias
 

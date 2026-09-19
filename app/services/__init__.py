@@ -5,6 +5,7 @@ let the session commit or roll back. The interface layer only calls these
 classes.
 """
 
+from app.services.backup_service import BackupManifest, BackupService
 from app.services.base_service import BaseService
 from app.services.clients_service import ClientService
 from app.services.equipment_service import EquipmentService
@@ -18,6 +19,8 @@ from app.services.services_service import ServiceService
 from app.services.visits_service import VisitService
 
 __all__ = [
+    "BackupManifest",
+    "BackupService",
     "BaseService",
     "ClientService",
     "EquipmentService",

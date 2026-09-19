@@ -44,9 +44,14 @@ from app.utils.dates import today
 
 
 @pytest.fixture
-def database(tmp_path: Path) -> Iterator[Database]:
-    """Provide an isolated SQLite database created from the ORM metadata."""
-    db = Database(f"sqlite:///{tmp_path / 'fielddesk_test.db'}")
+def database(settings: Settings) -> Iterator[Database]:
+    """Provide an isolated SQLite database created from the ORM metadata.
+
+    It uses the same database path as the ``settings`` fixture so backup and
+    file operations behave exactly as in production.
+    """
+    settings.ensure_directories()
+    db = Database(settings.database_url)
     db.create_all()
     try:
         yield db

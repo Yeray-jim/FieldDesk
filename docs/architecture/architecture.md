@@ -171,8 +171,8 @@ Las pantallas de clientes, ubicaciones, equipos, servicios, visitas,
 incidencias y materiales están conectadas de extremo a extremo
 (UI → servicios → repositorios → SQLite). El panel de control, la gestión de
 materiales por servicio, la galería de evidencias (con `FilePicker` y
-miniaturas Pillow) y la generación de reportes PDF (ReportLab) también
-consumen los servicios reales.
+miniaturas Pillow), la generación de reportes PDF (ReportLab) y el
+backup/restauración en ZIP también consumen los servicios reales.
 
 ## 11. Decisiones arquitectónicas
 

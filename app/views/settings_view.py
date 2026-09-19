@@ -1,14 +1,20 @@
-"""Settings screen: application information, appearance and storage."""
+"""Settings screen: application information, appearance, storage and backup."""
 
 from __future__ import annotations
 
+import logging
+
 import flet as ft
 
+from app.components.buttons import primary_button, secondary_button
 from app.components.cards import GlassCard, InfoRow, SectionHeader
-from app.components.dialogs import notify
+from app.components.dialogs import confirm_dialog, notify
 from app.components.forms import GlassDropdown
-from app.components.theme import Metrics
+from app.components.theme import FontSize, Metrics, Palette
+from app.utils.exceptions import FieldDeskError
 from app.views.base_view import BaseView
+
+logger = logging.getLogger(__name__)
 
 _THEME_MODES: dict[str, ft.ThemeMode] = {
     "system": ft.ThemeMode.SYSTEM,
@@ -18,7 +24,7 @@ _THEME_MODES: dict[str, ft.ThemeMode] = {
 
 
 class SettingsView(BaseView):
-    """Configuration and information about the application."""
+    """Configuration, backup and information about the application."""
 
     title = "Ajustes"
     icon = ft.Icons.SETTINGS_OUTLINED
@@ -28,6 +34,7 @@ class SettingsView(BaseView):
             controls=[
                 SectionHeader("Ajustes", icon=ft.Icons.SETTINGS_OUTLINED),
                 self._appearance_card(),
+                self._backup_card(),
                 self._information_card(),
                 self._storage_card(),
             ],
@@ -62,6 +69,42 @@ class SettingsView(BaseView):
             )
         )
 
+    def _backup_card(self) -> GlassCard:
+        return GlassCard(
+            content=ft.Column(
+                controls=[
+                    SectionHeader(
+                        "Copias de seguridad", icon=ft.Icons.BACKUP_OUTLINED
+                    ),
+                    ft.Text(
+                        "Guarda la base de datos, las imágenes y los "
+                        "documentos en un archivo ZIP, o restaura una copia "
+                        "anterior. Antes de restaurar se crea "
+                        "automáticamente una copia de seguridad.",
+                        size=FontSize.CAPTION,
+                        color=Palette.TEXT_MUTED,
+                    ),
+                    ft.Row(
+                        controls=[
+                            primary_button(
+                                "Crear copia",
+                                icon=ft.Icons.SAVE_ALT_OUTLINED,
+                                on_click=self._handle_backup,
+                            ),
+                            secondary_button(
+                                "Restaurar copia",
+                                icon=ft.Icons.RESTORE_OUTLINED,
+                                on_click=self._handle_restore,
+                            ),
+                        ],
+                        spacing=Metrics.SPACING_SMALL,
+                        wrap=True,
+                    ),
+                ],
+                spacing=Metrics.SPACING,
+            )
+        )
+
     def _information_card(self) -> GlassCard:
         return GlassCard(
             content=ft.Column(
@@ -89,14 +132,93 @@ class SettingsView(BaseView):
                     ),
                     InfoRow("Imágenes", str(self.settings.images_dir)),
                     InfoRow("Documentos", str(self.settings.documents_dir)),
-                    InfoRow("Copias de seguridad", str(self.settings.backups_dir)),
+                    InfoRow(
+                        "Copias de seguridad", str(self.settings.backups_dir)
+                    ),
                 ],
                 spacing=Metrics.SPACING_SMALL,
             )
         )
 
+    # ------------------------------------------------------------------
+    # Handlers
+    # ------------------------------------------------------------------
     def _on_theme_change(self, event: ft.ControlEvent) -> None:
         key = event.control.value or "system"
         self.page.theme_mode = _THEME_MODES.get(key, ft.ThemeMode.SYSTEM)
         self.page.update()
         notify(self.page, "Tema actualizado.")
+
+    def _handle_backup(self, _event: ft.ControlEvent) -> None:
+        try:
+            path = self.services.backups.create_backup()
+        except FieldDeskError as error:
+            notify(self.page, str(error), error=True)
+            return
+        except Exception:  # noqa: BLE001 - never leak a traceback
+            logger.exception("No se pudo crear la copia de seguridad")
+            notify(
+                self.page,
+                "No se pudo crear la copia de seguridad.",
+                error=True,
+            )
+            return
+        notify(self.page, f"Copia creada: {path.name}")
+
+    def _handle_restore(self, _event: ft.ControlEvent) -> None:
+        if self.context.file_picker is None:
+            notify(
+                self.page,
+                "La selección de archivos no está disponible.",
+                error=True,
+            )
+            return
+        self.page.run_task(self._pick_backup)
+
+    async def _pick_backup(self) -> None:
+        files = await self.context.file_picker.pick_files(
+            dialog_title="Seleccionar copia de seguridad",
+            file_type=ft.FilePickerFileType.CUSTOM,
+            allowed_extensions=["zip"],
+            allow_multiple=False,
+        )
+        if not files:
+            return
+        source = getattr(files[0], "path", None)
+        if not source:
+            return
+
+        try:
+            manifest = self.services.backups.validate_backup(source)
+        except FieldDeskError as error:
+            notify(self.page, str(error), error=True)
+            return
+
+        confirm_dialog(
+            self.page,
+            title="¿Restaurar copia de seguridad?",
+            message=(
+                "Se reemplazarán todos los datos actuales por los de la copia "
+                f"del {manifest.created_at}. Se creará automáticamente una "
+                "copia de seguridad de los datos actuales antes de continuar."
+            ),
+            confirm_label="Restaurar",
+            on_confirm=lambda: self._restore(source),
+        )
+
+    def _restore(self, source: str) -> None:
+        try:
+            self.services.backups.restore_backup(source)
+        except FieldDeskError as error:
+            notify(self.page, str(error), error=True)
+            return
+        except Exception:  # noqa: BLE001 - never leak a traceback
+            logger.exception("No se pudo restaurar la copia de seguridad")
+            notify(
+                self.page,
+                "No se pudo restaurar la copia de seguridad.",
+                error=True,
+            )
+            return
+        notify(self.page, "Copia restaurada correctamente.")
+        self.page.update()

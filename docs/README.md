@@ -21,8 +21,8 @@ sincronizada con el código real en cada fase del desarrollo.
 
 ## Estado del proyecto
 
-Versión **0.1.0** — Fase 8 (Reportes PDF). Además del CRUD completo, el panel
-de control y las evidencias fotográficas, cada servicio puede generar un
-reporte PDF profesional (cliente, ubicación, equipo, servicio, visitas,
-incidencias, materiales y evidencias). El backup y la restauración llegan en
-la siguiente fase.
+Versión **0.1.0** — Fase 9 (Backup). La aplicación permite crear y restaurar
+copias de seguridad completas (base de datos + imágenes + documentos) en
+formato ZIP, con validación previa, copia de seguridad automática antes de
+restaurar y verificación de integridad. Quedan el testing final y la
+documentación de cierre (Fases 10 y 11).
